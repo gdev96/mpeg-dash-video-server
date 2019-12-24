@@ -1,3 +1,25 @@
 version: '3'
 services:
-    
+    video_processing_service:
+        build: ../video_process_service/
+        volumes:
+            - storage:/app
+    video_management_service:
+        build: ../video_management_service/
+        links:
+            - video_process_service
+            - mysql
+        volumes:
+            - storage:/app
+    frontend:
+        build: ../frontend/
+        ports:
+            - "8080:80"
+        link:
+            - video_management_service
+        volumes:
+            - storage:/webapp
+    mysql:
+        image: mysql
+volumes:
+    storage:
