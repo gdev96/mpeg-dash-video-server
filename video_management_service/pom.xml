@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.unict.dieei.pr20</groupId>
-    <artifactId>videomanagementservice</artifactId>
+    <artifactId>video-management-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>videomanagementservice</name>
-    <description>Video Management Service project</description>
+    <name>video-management-service</name>
+    <description>Video Management Service</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -23,10 +23,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

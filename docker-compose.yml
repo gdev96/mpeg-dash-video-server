@@ -1,0 +1,32 @@
+version: '3'
+services:
+  frontend:
+    build: frontend/
+    ports:
+      - "8080:80"
+    links:
+      - video_management_service
+    volumes:
+      - storage:/var/videofiles
+  video_management_service:
+    build: video_management_service/
+    links:
+      - mysql
+      - video_processing_service
+    volumes:
+      - storage:/data
+  mysql:
+    image: mariadb
+    restart: on-failure:5
+    environment:
+      MYSQL_ROOT_PASSWORD: videoserverPR20!
+    volumes:
+      - db-data:/var/lib/mysql/data
+  video_processing_service:
+    build: video_processing_service/
+    volumes:
+      - ./video_processing_service:/app
+      - storage:/data
+volumes:
+  storage:
+  db-data:
