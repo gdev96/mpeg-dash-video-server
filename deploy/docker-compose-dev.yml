@@ -21,5 +21,8 @@ services:
             - storage:/webapp
     mysql:
         image: mysql
+        volumes:
+            - dbdatavolume:/var/lib/mysql
 volumes:
+    dbdatavolume:
     storage:
