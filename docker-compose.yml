@@ -23,6 +23,8 @@ services:
     volumes:
       - db-data:/var/lib/mysql/data
   video_processing_service:
+    ports:
+      - "9090:5000"
     build: video_processing_service/
     volumes:
       - ./video_processing_service:/app
