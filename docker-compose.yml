@@ -15,13 +15,21 @@ services:
       - video_processing_service
     volumes:
       - storage:/data
+    environment:
+      DB_HOST: mysql
+      DB_NAME: videoserver
+      DB_USER: videoserveruser
+      DB_PASSWORD: videoserverPR20!
   mysql:
-    image: mariadb
+    image: mysql
     restart: on-failure:5
     environment:
-      MYSQL_ROOT_PASSWORD: videoserverPR20!
-    volumes:
-      - db-data:/var/lib/mysql/data
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: videoserver
+      MYSQL_USER: videoserveruser
+      MYSQL_PASSWORD: videoserverPR20!
+    #volumes:
+      #- db-data:/var/lib/mysql/data
   video_processing_service:
     ports:
       - "9090:5000"
@@ -31,4 +39,4 @@ services:
       - storage:/data
 volumes:
   storage:
-  db-data:
+  #db-data:
