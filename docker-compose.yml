@@ -7,14 +7,14 @@ services:
     links:
       - video_management_service
     volumes:
-      - storage:/var/videofiles
+      - storage:/var
   video_management_service:
     build: video_management_service/
     links:
       - mysql
       - video_processing_service
     volumes:
-      - storage:/data
+      - storage:/var
     environment:
       DB_HOST: mysql
       DB_NAME: videoserver
@@ -36,7 +36,7 @@ services:
       - "9090:5000"
     volumes:
       - ./video_processing_service:/app
-      - storage:/data
+      - storage:/var
 volumes:
   storage:
   #db-data:
