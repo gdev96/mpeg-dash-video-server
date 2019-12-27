@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
-import os
+import subprocess
 
 
 app = Flask(__name__)
@@ -17,11 +17,11 @@ def get_tasks():
     return jsonify({'Response': 'Ping received'})
 
 
-@app.route('/video/process', methods=['POST'])
+@app.route('/videos/process', methods=['POST'])
 def upload_video():
-    video_id = request.form['videoId']
-    cmd = "./encoder.sh ./var/video/" + video_id + "/video.mp4 " + video_id
-    os.system(cmd)
+    video_id = request.json['videoId']
+    cmd = "./encoder.sh " + str(video_id)
+    subprocess.call(cmd, shell=True)
     return jsonify({'Response': 'Video Encoded'})
 
 
