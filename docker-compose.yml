@@ -14,7 +14,7 @@ services:
       - db
       - video_processing_service
     volumes:
-      - storage:/var
+      - storage:/var/video
     environment:
       DB_NAME: videoserver
       DB_USER: videoserveruser
@@ -35,7 +35,8 @@ services:
       - "9090:5000"
     volumes:
       - ./video_processing_service:/app
-      - storage:/var
+      - storage:/var/video
+      - storage:/var/videofiles
 volumes:
   storage:
   #db-data:
