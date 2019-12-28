@@ -21,7 +21,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
-    @SuppressWarnings("SpringConfigurationProxyMethods")
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> optionalUser = userRepository.findByEmail(email);

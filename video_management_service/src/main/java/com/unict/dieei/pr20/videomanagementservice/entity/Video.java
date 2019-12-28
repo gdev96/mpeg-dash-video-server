@@ -1,7 +1,5 @@
 package com.unict.dieei.pr20.videomanagementservice.entity;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -18,7 +16,6 @@ public class Video {
     @NotNull(message = "The author parameter must not be blank!")
     private String author;
 
-    @ColumnDefault("pending")
     private String state;
 
     @ManyToOne
