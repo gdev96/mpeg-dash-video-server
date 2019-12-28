@@ -7,20 +7,19 @@ services:
     links:
       - video_management_service
     volumes:
-      - storage:/var
+      - storage:/var/videofiles
   video_management_service:
     build: video_management_service/
     links:
-      - mysql
+      - db
       - video_processing_service
     volumes:
       - storage:/var
     environment:
-      DB_HOST: mysql
       DB_NAME: videoserver
       DB_USER: videoserveruser
       DB_PASSWORD: videoserverPR20!
-  mysql:
+  db:
     image: mysql
     restart: on-failure:5
     environment:
