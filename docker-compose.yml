@@ -4,17 +4,18 @@ services:
     build: frontend/
     ports:
       - "8080:80"
+    volumes:
+      - ./frontend/src:/webapp
+      - storage:/var/videofiles
     links:
       - video_management_service
-    volumes:
-      - storage:/var/videofiles
   video_management_service:
     build: video_management_service/
+    volumes:
+      - storage:/var/video
     links:
       - db
       - video_processing_service
-    volumes:
-      - storage:/var/video
     environment:
       DB_NAME: videoserver
       DB_USER: videoserveruser
@@ -31,8 +32,6 @@ services:
       #- db-data:/var/lib/mysql/data
   video_processing_service:
     build: video_processing_service/
-    ports:
-      - "9090:5000"
     volumes:
       - ./video_processing_service:/app
       - storage:/var/video

@@ -16,6 +16,7 @@ public class Video {
     @NotNull(message = "The author parameter must not be blank!")
     private String author;
 
+    @NotNull(message = "The state parameter must not be blank!")
     private String state;
 
     @ManyToOne
