@@ -36,6 +36,12 @@ services:
       - ./video_processing_service:/app
       - storage:/var/video
       - storage:/var/videofiles
+    links:
+      - db
+    environment:
+      DB_NAME: videoserver
+      DB_USER: videoserveruser
+      DB_PASSWORD: videoserverPR20!
 volumes:
   storage:
   #db-data:
