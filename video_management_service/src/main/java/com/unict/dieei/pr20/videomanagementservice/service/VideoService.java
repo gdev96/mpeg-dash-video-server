@@ -33,13 +33,7 @@ public class VideoService {
     UserRepository userRepository;
 
     public Video addVideo(Authentication auth, Video video) {
-        if(auth == null) {
-            throw new MissingAuthorizationException();
-        }
         Optional<User> optionalUser = userRepository.findByEmail(auth.getName());
-        if(!optionalUser.isPresent()) {
-            throw new UserNotFoundException();
-        }
         User user = optionalUser.get();
         video.setUser(user);
         video.setState("pending");
@@ -47,13 +41,7 @@ public class VideoService {
     }
 
     public Video uploadVideo(Authentication auth, Integer id, MultipartFile file) {
-        if(auth == null) {
-            throw new MissingAuthorizationException();
-        }
         Optional<User> optionalUser = userRepository.findByEmail(auth.getName());
-        if(!optionalUser.isPresent()) {
-            throw new UserNotFoundException();
-        }
         User user = optionalUser.get();
         Optional<Video> optionalVideo = videoRepository.findById(id);
         if(!optionalVideo.isPresent()) {

@@ -20,7 +20,7 @@ public class CallStats {
     private Integer outputPayloadSize;
 
     @NotNull(message = "The Response Time parameter must not be blank!")
-    private Integer responseTime;
+    private Long responseTime;
 
     @NotNull(message = "The Status Code parameter must not be blank!")
     private Integer statusCode;
@@ -29,7 +29,7 @@ public class CallStats {
     private Float xRequestId;
 
     @NotNull(message = "The Component Name parameter must not be blank!")
-    private Float componentName;
+    private String componentName;
 
     public Integer getId() {
         return id;
@@ -63,11 +63,11 @@ public class CallStats {
         this.outputPayloadSize = outputPayloadSize;
     }
 
-    public Integer getResponseTime() {
+    public Long getResponseTime() {
         return responseTime;
     }
 
-    public void setResponseTime(Integer responseTime) {
+    public void setResponseTime(Long responseTime) {
         this.responseTime = responseTime;
     }
 
@@ -87,11 +87,11 @@ public class CallStats {
         this.xRequestId = xRequestId;
     }
 
-    public Float getComponentName() {
+    public String getComponentName() {
         return componentName;
     }
 
-    public void setComponentName(Float componentName) {
+    public void setComponentName(String componentName) {
         this.componentName = componentName;
     }
 }

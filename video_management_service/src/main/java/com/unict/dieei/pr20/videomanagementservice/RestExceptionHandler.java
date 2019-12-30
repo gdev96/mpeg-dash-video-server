@@ -10,16 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 public class RestExceptionHandler {
 
-    @ExceptionHandler(MissingAuthorizationException.class)
-    public @ResponseBody ResponseEntity<String> handleMissingAuthorization(Exception e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public @ResponseBody ResponseEntity<String> handleUserNotFound(Exception e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-    }
-
     @ExceptionHandler(UserMismatchException.class)
     public @ResponseBody ResponseEntity<String> handleUserMismatch(Exception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
