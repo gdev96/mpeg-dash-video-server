@@ -13,7 +13,7 @@ public class LogService {
     @Autowired
     LogRepository logRepository;
 
-    public void addCallStats(String api, int inputPayloadSize, int outputPayloadSize, long responseTime, int statusCode, float xRequestId) {
+    public void addCallStats(String api, int inputPayloadSize, int outputPayloadSize, long responseTime, int statusCode, long xRequestId) {
         System.out.println("---- LOGS ----");
         System.out.println("API: " + api);
         System.out.println("Input Payload Size: " + inputPayloadSize);

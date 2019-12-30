@@ -24,7 +24,7 @@ public class LoggingFilter extends OncePerRequestFilter {
         // Log each request and response with full Request URI, content payload and duration of the request in ms.
         long arrivalTime = System.currentTimeMillis();
         String api = request.getMethod() + " " + request.getRequestURI();
-        float xRequestId = Float.parseFloat(request.getHeader("X-REQUEST-ID"));
+        long xRequestId = Long.parseLong(request.getHeader("X-REQUEST-ID").replace(".", ""));
 
         // Log request and response payload (body)
         // We CANNOT simply read the request payload here.
