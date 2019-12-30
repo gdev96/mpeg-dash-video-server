@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class CallStats {
+public class Log {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,6 +30,16 @@ public class CallStats {
 
     @NotNull(message = "The Component Name parameter must not be blank!")
     private String componentName;
+
+    public Log(String api, int inputPayloadSize, int outputPayloadSize, long responseTime, int statusCode, float xRequestId, String componentName) {
+        this.api = api;
+        this.inputPayloadSize = inputPayloadSize;
+        this.outputPayloadSize = outputPayloadSize;
+        this.responseTime = responseTime;
+        this.statusCode = statusCode;
+        this.xRequestId = xRequestId;
+        this.componentName = componentName;
+    }
 
     public Integer getId() {
         return id;

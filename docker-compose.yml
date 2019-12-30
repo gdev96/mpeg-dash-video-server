@@ -17,6 +17,7 @@ services:
       - db
       - video_processing_service
     environment:
+      HOST_NAME: video_management_service
       DB_NAME: videoserver
       DB_USER: videoserveruser
       DB_PASSWORD: videoserverPR20!
@@ -39,6 +40,7 @@ services:
     links:
       - db
     environment:
+      HOST_NAME: video_processing_service
       DB_NAME: videoserver
       DB_USER: videoserveruser
       DB_PASSWORD: videoserverPR20!
