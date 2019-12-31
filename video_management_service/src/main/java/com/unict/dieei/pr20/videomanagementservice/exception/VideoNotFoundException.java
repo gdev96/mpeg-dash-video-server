@@ -1,8 +1,10 @@
 package com.unict.dieei.pr20.videomanagementservice.exception;
 
-public class VideoNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class VideoNotFoundException extends RestException {
 
     public VideoNotFoundException() {
-        super("The requested video was not found");
+        super("The requested video was not found", HttpStatus.NOT_FOUND);
     }
 }

@@ -1,8 +1,10 @@
 package com.unict.dieei.pr20.videomanagementservice.exception;
 
-public class EmptyFileException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class EmptyFileException extends RestException {
 
     public EmptyFileException() {
-        super("Video file is empty");
+        super("Video file is empty", HttpStatus.BAD_REQUEST);
     }
 }

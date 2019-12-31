@@ -61,7 +61,7 @@ public class User {
         if(this == obj) return true;
         if(!(obj instanceof User)) return false;
         User user = (User)obj;
-        return Objects.equals(email, user.email);
+        return Objects.equals(this.email, user.email);
     }
 
     @Override

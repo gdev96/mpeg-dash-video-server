@@ -31,8 +31,18 @@ public class LogFilter extends OncePerRequestFilter {
         // Perform request
         filterChain.doFilter(requestWrapper, responseWrapper);
 
-        // Timestamp finish time and evaluate response time
-        long responseTime = System.currentTimeMillis() - arrivalTime;
+        // Timestamp finish time
+        long finishTime = System.currentTimeMillis();
+
+        // Get eventual communication delay
+        long responseTime;
+        if(responseWrapper.containsHeader("Communication-Delay")) {
+            long communicationDelay = Long.parseLong(responseWrapper.getHeader("Communication-Delay"));
+            responseTime = finishTime - arrivalTime - communicationDelay;
+        }
+        else {
+            responseTime = finishTime - arrivalTime;
+        }
 
         // Get logs info
         String api = requestWrapper.getMethod() + " " + requestWrapper.getRequestURI();

@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Service
@@ -36,11 +37,11 @@ public class VideoService {
         Optional<User> optionalUser = userRepository.findByEmail(auth.getName());
         User user = optionalUser.get();
         video.setUser(user);
-        video.setState("pending");
+        video.setState("Pending");
         return videoRepository.save(video);
     }
 
-    public Video uploadVideo(Authentication auth, Integer id, MultipartFile file) {
+    public Object[] uploadVideo(Authentication auth, Integer id, String xRequestId, MultipartFile file) {
         Optional<User> optionalUser = userRepository.findByEmail(auth.getName());
         User user = optionalUser.get();
         Optional<Video> optionalVideo = videoRepository.findById(id);
@@ -64,21 +65,25 @@ public class VideoService {
         }
 
         //SEND POST REQUEST TO VIDEO PROCESSING SERVICE
+        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("X-REQUEST-ID", xRequestId);
         String body = "{\"videoId\":" + id + "}";
-        RequestEntity<String> request = new RequestEntity<>(
-                body,
-                headers,
-                HttpMethod.POST,
-                URI.create("http://video_processing_service_1:5000/videos/process")
-        );
-        RestTemplate restTemplate = new RestTemplate();
+        URI url = URI.create("http://video_processing_service_1:5000/videos/process");
+        RequestEntity<String> request = new RequestEntity<>(body, headers, HttpMethod.POST, url);
+        long sendTime = System.currentTimeMillis();
+
+        //SEND REQUEST
         ResponseEntity<String> response = restTemplate.exchange(request, String.class);
+
+        long communicationDelay = System.currentTimeMillis() - sendTime;
         System.out.println(response);
 
-        video.setState("uploaded");
-        return videoRepository.save(video);
+        video.setState("Uploaded");
+        Video savedVideo = videoRepository.save(video);
+
+        return new Object[]{savedVideo, communicationDelay};
     }
 
     public Iterable<Video> getAllVideos() {

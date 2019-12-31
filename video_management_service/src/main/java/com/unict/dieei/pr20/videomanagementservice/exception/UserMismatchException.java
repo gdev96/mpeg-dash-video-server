@@ -1,8 +1,10 @@
 package com.unict.dieei.pr20.videomanagementservice.exception;
 
-public class UserMismatchException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class UserMismatchException extends RestException {
 
     public UserMismatchException() {
-        super("The requested resource belongs to another user");
+        super("The requested resource belongs to another user", HttpStatus.FORBIDDEN);
     }
 }
