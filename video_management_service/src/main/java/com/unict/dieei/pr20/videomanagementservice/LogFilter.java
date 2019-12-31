@@ -66,6 +66,6 @@ public class LogFilter extends OncePerRequestFilter {
         responseWrapper.copyBodyToResponse();
 
         // Save logs to DB
-        logService.addCallStats(api, inputPayloadSize, outputPayloadSize, responseTime, statusCode, xRequestId);
+        logService.addLogs(api, inputPayloadSize, outputPayloadSize, responseTime, statusCode, xRequestId);
     }
 }

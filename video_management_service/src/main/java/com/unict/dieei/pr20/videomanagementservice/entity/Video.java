@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 public class Video {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull(message = "The name parameter must not be blank!")

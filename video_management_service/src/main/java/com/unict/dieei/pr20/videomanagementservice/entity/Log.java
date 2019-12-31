@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 public class Log {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull(message = "The API parameter must not be blank!")

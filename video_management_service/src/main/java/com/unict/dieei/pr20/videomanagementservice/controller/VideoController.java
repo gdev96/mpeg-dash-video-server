@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
 @RestController
@@ -30,9 +29,9 @@ public class VideoController {
                                                            @RequestParam("file") MultipartFile file) {
         Object[] responseValues = videoService.uploadVideo(auth, id, xRequestId, file);
         Video uploadedVideo = (Video)responseValues[0];
-        String communicationDelay = (String)responseValues[1];
+        Long communicationDelay = (Long)responseValues[1];
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Communication-Delay", communicationDelay);
+        headers.set("Communication-Delay", String.valueOf(communicationDelay));
         return new ResponseEntity<>(uploadedVideo, headers, HttpStatus.CREATED);
     }
 
