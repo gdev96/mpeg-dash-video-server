@@ -1,4 +1,4 @@
-ffmpeg -i /var/video/$1/video.mp4 \
+ffmpeg -loglevel error -i /var/video/$1/video.mp4 \
     -map 0:v:0 -map 0:a\?:0 -map 0:v:0 -map 0:a\?:0 -map 0:v:0 -map 0:a\?:0 -map 0:v:0 -map 0:a\?:0 -map 0:v:0 -map 0:a\?:0 -map 0:v:0 -map 0:a\?:0 \
     -b:v:0 350k  -c:v:0 libx264    -filter:v:0 "scale=320:-1"  \
     -b:v:1 1000k -c:v:1 libx264    -filter:v:1 "scale=640:-1"  \

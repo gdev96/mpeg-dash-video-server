@@ -1,60 +1,68 @@
 from flask import Flask
-from flask import jsonify
 from flask import request
-from time import time
 import mysql.connector
 import os
 import subprocess
+from time import time
+
 
 app = Flask(__name__)
-
-cnx = mysql.connector.connect(
-        host="mpeg-dash-video-server_db_1",
-        user=os.environ['DB_USER'],
-        password=os.environ['DB_PASSWORD'],
-        database=os.environ['DB_NAME']
-    )
+connector = None
 
 
-@app.route("/")
-def hello():
-    return "Video_Processing_Service is running"
-
-
-@app.route('/ping', methods=['GET'])
-def get_tasks():
-    return jsonify({'Response': 'Ping received'})
+class Connector:
+    def __init__(self):
+        self.cnx = mysql.connector.connect(
+            host="db_1",
+            user=os.environ['DB_USER'],
+            password=os.environ['DB_PASSWORD'],
+            database=os.environ['DB_NAME']
+        )
 
 
 @app.route('/videos/process', methods=['POST'])
 def upload_video():
-    start_time = int(round(time() * 1000))
+    # Timestamp arrival time
+    arrival_time = time()
 
-    # CALL VIDEO ENCODING SCRIPT
+    # Execute video encoding script
     video_id = request.json['videoId']
     cmd = "./encoder.sh " + str(video_id)
-    subprocess.call(cmd, shell=True)
+    return_code = subprocess.call(cmd, shell=True)
 
-    # INSERT STATISTICS IN DB
-    my_cursor = cnx.cursor()
-    component_name = "Video Processing Service"
-    api = request.method + "" + request.path
+    # Make response
+    response = app.make_response(('Video encoded successfully', 201))
+
+    # Timestamp finish time
+    finish_time = time()
+
+    # Evaluate response time
+    response_time = int(round((finish_time - arrival_time) * 1000))
+
+    # Get logs info
+    component_name = os.environ['HOST_NAME']
+    api = request.method + " " + request.path
     input_payload_size = request.content_length
     x_request_id = request.headers.get("X-REQUEST-ID").replace('.', '')
-    sql = "INSERT INTO call_stats (api, component_name, input_payload_size, output_payload_size, response_time," \
-          "status_code, x_request_id) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    response = app.make_response('Video Encoded')
     output_payload_size = response.content_length
     status_code = response.status_code
-    response_time = int(round(time() * 1000)) - start_time
+
+    # Connect to DB (if not done before...)
+    global connector
+    if connector is None:
+        connector = Connector()
+
+    my_cursor = connector.cnx.cursor()
+
+    # Save logs to DB
+    sql = "INSERT INTO log (api, component_name, input_payload_size, output_payload_size, response_time, " \
+          "status_code, x_request_id) VALUES (%s, %s, %s, %s, %s, %s, %s)"
     val = (api, component_name, input_payload_size, output_payload_size, response_time, status_code, x_request_id)
     my_cursor.execute(sql, val)
-    cnx.commit()
+    connector.cnx.commit()
+
     return response
 
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
-
-
-
