@@ -26,20 +26,20 @@ public class Log {
     private Integer statusCode;
 
     @NotNull(message = "The X-REQUEST-ID parameter must not be blank!")
-    private Long xRequestId;
+    private Long requestId;
 
     @NotNull(message = "The Component Name parameter must not be blank!")
     private String componentName;
 
     public Log() {}
 
-    public Log(String api, Integer inputPayloadSize, Integer outputPayloadSize, Long responseTime, Integer statusCode, Long xRequestId, String componentName) {
+    public Log(String api, Integer inputPayloadSize, Integer outputPayloadSize, Long responseTime, Integer statusCode, Long requestId, String componentName) {
         this.api = api;
         this.inputPayloadSize = inputPayloadSize;
         this.outputPayloadSize = outputPayloadSize;
         this.responseTime = responseTime;
         this.statusCode = statusCode;
-        this.xRequestId = xRequestId;
+        this.requestId = requestId;
         this.componentName = componentName;
     }
 
@@ -91,12 +91,12 @@ public class Log {
         this.statusCode = statusCode;
     }
 
-    public Long getxRequestId() {
-        return xRequestId;
+    public Long getRequestId() {
+        return requestId;
     }
 
-    public void setxRequestId(Long xRequestId) {
-        this.xRequestId = xRequestId;
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
     }
 
     public String getComponentName() {

@@ -20,6 +20,11 @@ class Connector:
         )
 
 
+@app.route("/ping", methods=["GET"])
+def ping():
+    return "pong"
+
+
 @app.route("/videos/process", methods=["POST"])
 def upload_video():
     # Timestamp arrival time
@@ -46,7 +51,7 @@ def upload_video():
     component_name = os.environ["HOST_NAME"]
     api = request.method + " " + request.path
     input_payload_size = request.content_length
-    x_request_id = request.headers.get("X-REQUEST-ID").replace(".", "")
+    request_id = request.headers.get("X-REQUEST-ID").replace(".", "")
     output_payload_size = response.content_length
     status_code = response.status_code
 
@@ -59,8 +64,8 @@ def upload_video():
 
     # Save logs to DB
     sql = "INSERT INTO log (api, component_name, input_payload_size, output_payload_size, response_time, " \
-          "status_code, x_request_id) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    val = (api, component_name, input_payload_size, output_payload_size, response_time, status_code, x_request_id)
+          "status_code, request_id) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    val = (api, component_name, input_payload_size, output_payload_size, response_time, status_code, request_id)
     my_cursor.execute(sql, val)
     connector.cnx.commit()
 
