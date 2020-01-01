@@ -13,7 +13,7 @@ public class LogService {
     @Autowired
     LogRepository logRepository;
 
-    public void addLogs(String api, int inputPayloadSize, int outputPayloadSize, long responseTime, int statusCode, long xRequestId) {
+    public void addLog(String api, int inputPayloadSize, int outputPayloadSize, long responseTime, int statusCode, long xRequestId) {
         String componentName = System.getenv("HOST_NAME");
         Log log = new Log(api, inputPayloadSize, outputPayloadSize, responseTime, statusCode, xRequestId, componentName);
         logRepository.save(log);

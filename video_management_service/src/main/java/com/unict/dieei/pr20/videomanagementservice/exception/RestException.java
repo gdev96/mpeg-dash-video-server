@@ -3,6 +3,7 @@ package com.unict.dieei.pr20.videomanagementservice.exception;
 import org.springframework.http.HttpStatus;
 
 public class RestException extends RuntimeException {
+
     HttpStatus status;
 
     public RestException(String message, HttpStatus status) {

@@ -2,7 +2,7 @@ package com.unict.dieei.pr20.videomanagementservice.service;
 
 import com.unict.dieei.pr20.videomanagementservice.entity.User;
 import com.unict.dieei.pr20.videomanagementservice.entity.Video;
-import com.unict.dieei.pr20.videomanagementservice.exception.*;
+import com.unict.dieei.pr20.videomanagementservice.exception.RestException;
 import com.unict.dieei.pr20.videomanagementservice.repository.UserRepository;
 import com.unict.dieei.pr20.videomanagementservice.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,25 +45,25 @@ public class VideoService {
         User user = optionalUser.get();
         Optional<Video> optionalVideo = videoRepository.findById(id);
         if(!optionalVideo.isPresent()) {
-            throw new VideoInfoNotFoundException();
+            throw new RestException("Video infos not found", HttpStatus.BAD_REQUEST);
         }
         Video video = optionalVideo.get();
         if(!video.getUser().equals(user)) {
-            throw new UserMismatchException();
+            throw new RestException("Requested resource belongs to another user", HttpStatus.FORBIDDEN);
         }
 
-        //SAVE VIDEO FILE TO DISK
+        // Save video file to disk
         if(file.isEmpty()) {
-            throw new EmptyFileException();
+            throw new RestException("Video file is empty", HttpStatus.BAD_REQUEST);
         }
         try(InputStream inputStream = file.getInputStream()) {
             Path videoPath = Files.createDirectories(Paths.get("/var/video/" + id + "/video.mp4"));
             Files.copy(inputStream, videoPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            throw new FileNotSavedException();
+            throw new RestException("Video file already exists", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        //SEND POST REQUEST TO VIDEO PROCESSING SERVICE
+        // Send POST request to video processing service
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -73,11 +73,14 @@ public class VideoService {
         RequestEntity<String> request = new RequestEntity<>(body, headers, HttpMethod.POST, url);
         long sendTime = System.currentTimeMillis();
 
-        //SEND REQUEST
+        // Send request and get response
         ResponseEntity<String> response = restTemplate.exchange(request, String.class);
 
         long communicationDelay = System.currentTimeMillis() - sendTime;
-        System.out.println(response);
+
+        if(response.getStatusCode() != HttpStatus.CREATED) {
+            throw new RestException(response.getBody(), response.getStatusCode());
+        }
 
         video.setState("Uploaded");
         Video savedVideo = videoRepository.save(video);
@@ -91,7 +94,7 @@ public class VideoService {
 
     public void checkVideoExistence(Integer id) {
         if(!videoRepository.existsById(id)) {
-            throw new VideoNotFoundException();
+            throw new RestException("Requested video not found", HttpStatus.NOT_FOUND);
         }
     }
 }

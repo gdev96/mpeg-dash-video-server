@@ -3,6 +3,7 @@ package com.unict.dieei.pr20.videomanagementservice.exception;
 import java.time.ZonedDateTime;
 
 public class ApiError {
+
     private ZonedDateTime timestamp;
     private int status;
     private String error;

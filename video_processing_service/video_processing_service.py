@@ -14,24 +14,27 @@ class Connector:
     def __init__(self):
         self.cnx = mysql.connector.connect(
             host="db_1",
-            user=os.environ['DB_USER'],
-            password=os.environ['DB_PASSWORD'],
-            database=os.environ['DB_NAME']
+            user=os.environ["DB_USER"],
+            password=os.environ["DB_PASSWORD"],
+            database=os.environ["DB_NAME"]
         )
 
 
-@app.route('/videos/process', methods=['POST'])
+@app.route("/videos/process", methods=["POST"])
 def upload_video():
     # Timestamp arrival time
     arrival_time = time()
 
     # Execute video encoding script
-    video_id = request.json['videoId']
+    video_id = request.json["videoId"]
     cmd = "./encoder.sh " + str(video_id)
     return_code = subprocess.call(cmd, shell=True)
 
     # Make response
-    response = app.make_response(('Video encoded successfully', 201))
+    if return_code == 0:
+        response = app.make_response(("", 201))  # Video encoded successfully
+    else:
+        response = app.make_response(("Error while encoding video", 500))
 
     # Timestamp finish time
     finish_time = time()
@@ -40,10 +43,10 @@ def upload_video():
     response_time = int(round((finish_time - arrival_time) * 1000))
 
     # Get logs info
-    component_name = os.environ['HOST_NAME']
+    component_name = os.environ["HOST_NAME"]
     api = request.method + " " + request.path
     input_payload_size = request.content_length
-    x_request_id = request.headers.get("X-REQUEST-ID").replace('.', '')
+    x_request_id = request.headers.get("X-REQUEST-ID").replace(".", "")
     output_payload_size = response.content_length
     status_code = response.status_code
 
