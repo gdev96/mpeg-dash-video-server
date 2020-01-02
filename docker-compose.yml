@@ -29,8 +29,8 @@ services:
       MYSQL_DATABASE: videoserver
       MYSQL_USER: videoserveruser
       MYSQL_PASSWORD: videoserverPR20!
-    #volumes:
-      #- db-data:/var/lib/mysql/data
+    volumes:
+      - db-data:/var/lib/mysql:rw
   video_processing_service:
     build: video_processing_service/
     volumes:
@@ -46,4 +46,4 @@ services:
       DB_PASSWORD: videoserverPR20!
 volumes:
   storage:
-  #db-data:
+  db-data:
