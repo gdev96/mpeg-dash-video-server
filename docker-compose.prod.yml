@@ -1,3 +1,47 @@
 version: '3'
 services:
-    
+  frontend:
+    image: ilmanno/frontend:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - storage:/var/videofiles
+    links:
+      - video_management_service
+  video_management_service:
+    image: ilmanno/video-management-service:latest
+    volumes:
+      - storage:/var/video
+    links:
+      - db
+      - video_processing_service
+    environment:
+      HOST_NAME: video_management_service
+      DB_NAME: videoserver
+      DB_USER: videoserveruser
+      DB_PASSWORD: videoserverPR20!
+  db:
+    image: mysql
+    restart: on-failure:5
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: videoserver
+      MYSQL_USER: videoserveruser
+      MYSQL_PASSWORD: videoserverPR20!
+    volumes:
+      - db-data:/var/lib/mysql:rw
+  video_processing_service:
+    image: ilmanno/video-processing-service:latest
+    volumes:
+      - storage:/var/video
+      - storage:/var/videofiles
+    links:
+      - db
+    environment:
+      HOST_NAME: video_processing_service
+      DB_NAME: videoserver
+      DB_USER: videoserveruser
+      DB_PASSWORD: videoserverPR20!
+volumes:
+  storage:
+  db-data:
