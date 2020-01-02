@@ -36,7 +36,7 @@ public class VideoService {
         Optional<User> optionalUser = userRepository.findByEmail(auth.getName());
         User user = optionalUser.get();
         video.setUser(user);
-        video.setState("Pending");
+        video.setState("WaitingUpload");
         return videoRepository.save(video);
     }
 
