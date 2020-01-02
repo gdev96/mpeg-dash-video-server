@@ -25,13 +25,13 @@ public class VideoController {
 
     @PostMapping(path = "/{id}")
     public @ResponseBody ResponseEntity<Video> uploadVideo(Authentication auth, @PathVariable Integer id,
-                                                           @RequestHeader("X-REQUEST-ID") String xRequestId,
+                                                           @RequestHeader("X-REQUEST-ID") String requestId,
                                                            @RequestParam("file") MultipartFile file) {
-        Object[] responseValues = videoService.uploadVideo(auth, id, xRequestId, file);
+        Object[] responseValues = videoService.uploadVideo(auth, id, requestId, file);
         Video uploadedVideo = (Video)responseValues[0];
         Long communicationDelay = (Long)responseValues[1];
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Communication-Delay", String.valueOf(communicationDelay));
+        headers.set("X-Communication-Delay", String.valueOf(communicationDelay));
         return new ResponseEntity<>(uploadedVideo, headers, HttpStatus.CREATED);
     }
 

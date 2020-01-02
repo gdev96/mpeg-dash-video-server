@@ -40,7 +40,7 @@ public class VideoService {
         return videoRepository.save(video);
     }
 
-    public Object[] uploadVideo(Authentication auth, Integer id, String xRequestId, MultipartFile file) {
+    public Object[] uploadVideo(Authentication auth, Integer id, String requestId, MultipartFile file) {
         Optional<User> optionalUser = userRepository.findByEmail(auth.getName());
         User user = optionalUser.get();
         Optional<Video> optionalVideo = videoRepository.findById(id);
@@ -67,7 +67,7 @@ public class VideoService {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-REQUEST-ID", xRequestId);
+        headers.set("X-REQUEST-ID", requestId);
         String body = "{\"videoId\":" + id + "}";
         URI url = URI.create("http://video_processing_service_1:5000/videos/process");
         RequestEntity<String> request = new RequestEntity<>(body, headers, HttpMethod.POST, url);

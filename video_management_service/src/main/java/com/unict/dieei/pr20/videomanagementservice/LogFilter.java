@@ -39,8 +39,8 @@ public class LogFilter extends GenericFilterBean {
 
         // Get eventual communication delay
         long responseTime;
-        if(responseWrapper.containsHeader("Communication-Delay")) {
-            long communicationDelay = Long.parseLong(responseWrapper.getHeader("Communication-Delay"));
+        if(responseWrapper.containsHeader("X-Communication-Delay")) {
+            long communicationDelay = Long.parseLong(responseWrapper.getHeader("X-Communication-Delay"));
             responseTime = finishTime - arrivalTime - communicationDelay;
         }
         else {
@@ -53,9 +53,10 @@ public class LogFilter extends GenericFilterBean {
             byte[] byteArrayResponse = responseWrapper.getContentAsByteArray();
             if(byteArrayResponse.length > 0) {
                 String stringResponse = new String(byteArrayResponse, StandardCharsets.UTF_8);
-                int startPathIndex = stringResponse.indexOf("\"path\"") + 8;
-                int finishPathIndex = stringResponse.length() - 2;
-                requestUri = stringResponse.substring(startPathIndex, finishPathIndex);
+                int startIndexPath = stringResponse.indexOf("\"path\"") + 8;
+                String afterPath = stringResponse.substring(startIndexPath);
+                int finishIndexPath = startIndexPath + afterPath.indexOf("\"");
+                requestUri = stringResponse.substring(startIndexPath, finishIndexPath);
             }
         }
         String api = requestWrapper.getMethod() + " " + requestUri;
