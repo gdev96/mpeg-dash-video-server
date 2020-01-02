@@ -1,11 +1,11 @@
 version: '3'
 services:
-  frontend:
-    build: frontend/
+  api_gateway:
+    build: api_gateway/
     ports:
       - "8080:80"
     volumes:
-      - ./frontend/src:/webapp
+      - ./api_gateway/src:/webapp
       - storage:/var/videofiles
     links:
       - video_management_service

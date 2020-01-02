@@ -1,7 +1,7 @@
 version: '3'
 services:
-  frontend:
-    image: ilmanno/frontend:latest
+  api_gateway:
+    image: gdev96/api-gateway:1.0.0
     ports:
       - "8080:80"
     volumes:
@@ -9,7 +9,7 @@ services:
     links:
       - video_management_service
   video_management_service:
-    image: ilmanno/video-management-service:latest
+    image: gdev96/video-management-service:1.0.0
     volumes:
       - storage:/var/video
     links:
@@ -22,7 +22,7 @@ services:
       DB_PASSWORD: videoserverPR20!
   db:
     image: mysql
-    restart: on-failure:5
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: videoserver
@@ -31,7 +31,7 @@ services:
     volumes:
       - db-data:/var/lib/mysql:rw
   video_processing_service:
-    image: ilmanno/video-processing-service:latest
+    image: gdev96/video-processing-service:1.0.0
     volumes:
       - storage:/var/video
       - storage:/var/videofiles
