@@ -1,7 +1,7 @@
 version: '3'
 services:
   api_gateway:
-    image: gdev96/api-gateway:1.0.0
+    image: gdev96/api-gateway
     ports:
       - "8080:80"
     volumes:
@@ -9,7 +9,7 @@ services:
     links:
       - video_management_service
   video_management_service:
-    image: gdev96/video-management-service:1.0.1
+    image: gdev96/video-management-service
     volumes:
       - storage:/var/video
     links:
@@ -31,7 +31,7 @@ services:
     volumes:
       - db-data:/var/lib/mysql:rw
   video_processing_service:
-    image: gdev96/video-processing-service:1.0.1
+    image: gdev96/video-processing-service
     volumes:
       - storage:/var/video
       - storage:/var/videofiles
