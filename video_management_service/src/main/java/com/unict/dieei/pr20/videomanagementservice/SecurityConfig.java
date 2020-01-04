@@ -36,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/.~~spring-boot!~/**").permitAll() //Authorize live reload
+                .antMatchers(HttpMethod.POST, "/.~~spring-boot!~/restart").permitAll() //Authorize live reload upload
+                .antMatchers(HttpMethod.GET, "/.~~spring-boot!~").permitAll() //Authorize live reload check
                 .antMatchers(HttpMethod.GET, "/ping").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .antMatchers(HttpMethod.GET, "/videos/**").permitAll()
