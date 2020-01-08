@@ -1,7 +1,7 @@
 package com.unict.dieei.pr20.videomanagementservice.service;
 
-import com.unict.dieei.pr20.videomanagementservice.entity.User;
-import com.unict.dieei.pr20.videomanagementservice.repository.UserRepository;
+import com.unict.dieei.pr20.videomanagementservice.model.videoserver.User;
+import com.unict.dieei.pr20.videomanagementservice.repository.videoserver.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;

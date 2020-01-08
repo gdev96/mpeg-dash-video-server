@@ -1,4 +1,4 @@
-package com.unict.dieei.pr20.videomanagementservice.entity;
+package com.unict.dieei.pr20.videomanagementservice.model.videoserver;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

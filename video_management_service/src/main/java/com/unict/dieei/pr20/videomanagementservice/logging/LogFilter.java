@@ -1,4 +1,4 @@
-package com.unict.dieei.pr20.videomanagementservice;
+package com.unict.dieei.pr20.videomanagementservice.logging;
 
 import com.unict.dieei.pr20.videomanagementservice.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;

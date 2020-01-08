@@ -1,10 +1,10 @@
 package com.unict.dieei.pr20.videomanagementservice.service;
 
-import com.unict.dieei.pr20.videomanagementservice.entity.User;
-import com.unict.dieei.pr20.videomanagementservice.entity.Video;
+import com.unict.dieei.pr20.videomanagementservice.model.videoserver.User;
+import com.unict.dieei.pr20.videomanagementservice.model.videoserver.Video;
 import com.unict.dieei.pr20.videomanagementservice.exception.RestException;
-import com.unict.dieei.pr20.videomanagementservice.repository.UserRepository;
-import com.unict.dieei.pr20.videomanagementservice.repository.VideoRepository;
+import com.unict.dieei.pr20.videomanagementservice.repository.videoserver.UserRepository;
+import com.unict.dieei.pr20.videomanagementservice.repository.videoserver.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;

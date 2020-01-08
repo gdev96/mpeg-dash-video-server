@@ -1,10 +1,10 @@
-package com.unict.dieei.pr20.videomanagementservice.entity;
+package com.unict.dieei.pr20.videomanagementservice.model.log;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Log {
+public class LogInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +31,9 @@ public class Log {
     @NotNull(message = "The Component Name parameter must not be blank!")
     private String componentName;
 
-    public Log() {}
+    public LogInfo() {}
 
-    public Log(String api, Integer inputPayloadSize, Integer outputPayloadSize, Long responseTime, Integer statusCode, Long requestId, String componentName) {
+    public LogInfo(String api, Integer inputPayloadSize, Integer outputPayloadSize, Long responseTime, Integer statusCode, Long requestId, String componentName) {
         this.api = api;
         this.inputPayloadSize = inputPayloadSize;
         this.outputPayloadSize = outputPayloadSize;

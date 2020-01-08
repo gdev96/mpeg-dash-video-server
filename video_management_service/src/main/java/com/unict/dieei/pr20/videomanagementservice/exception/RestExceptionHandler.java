@@ -1,7 +1,5 @@
-package com.unict.dieei.pr20.videomanagementservice;
+package com.unict.dieei.pr20.videomanagementservice.exception;
 
-import com.unict.dieei.pr20.videomanagementservice.exception.ApiError;
-import com.unict.dieei.pr20.videomanagementservice.exception.RestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

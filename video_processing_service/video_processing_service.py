@@ -62,7 +62,7 @@ def after_request_callback(response):
 
     # Connect to DB
     cnx = mysql.connector.connect(
-        host="db_1",
+        host="log_db_1",
         user=os.environ["DB_USER"],
         password=os.environ["DB_PASSWORD"],
         database=os.environ["DB_NAME"]
@@ -72,7 +72,7 @@ def after_request_callback(response):
     my_cursor = cnx.cursor()
 
     # Save logs to DB
-    sql = "INSERT INTO log (api, component_name, input_payload_size, output_payload_size, response_time, " \
+    sql = "INSERT INTO log_info (api, component_name, input_payload_size, output_payload_size, response_time, " \
           "status_code, request_id) VALUES (%s, %s, %s, %s, %s, %s, %s)"
     val = (api, component_name, input_payload_size, output_payload_size, response_time, status_code, request_id)
     my_cursor.execute(sql, val)

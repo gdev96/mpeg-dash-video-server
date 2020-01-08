@@ -1,6 +1,6 @@
 package com.unict.dieei.pr20.videomanagementservice.controller;
 
-import com.unict.dieei.pr20.videomanagementservice.entity.Video;
+import com.unict.dieei.pr20.videomanagementservice.model.videoserver.Video;
 import com.unict.dieei.pr20.videomanagementservice.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;

@@ -1,7 +1,7 @@
 package com.unict.dieei.pr20.videomanagementservice.service;
 
-import com.unict.dieei.pr20.videomanagementservice.entity.Log;
-import com.unict.dieei.pr20.videomanagementservice.repository.LogRepository;
+import com.unict.dieei.pr20.videomanagementservice.model.log.LogInfo;
+import com.unict.dieei.pr20.videomanagementservice.repository.log.LogInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,25 +9,25 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional("logTransactionManager")
 public class LogService {
 
     @Autowired
-    LogRepository logRepository;
+    LogInfoRepository logInfoRepository;
 
     public void addLog(String api, int inputPayloadSize, int outputPayloadSize, long responseTime, int statusCode, long requestId) {
         String componentName = System.getenv("HOST_NAME");
-        Optional<Log> optionalLog = logRepository.findByRequestIdAndComponentName(requestId, componentName);
-        Log log;
+        Optional<LogInfo> optionalLog = logInfoRepository.findByRequestIdAndComponentName(requestId, componentName);
+        LogInfo logInfo;
         if(optionalLog.isPresent()) {
-            log = optionalLog.get();
-            Long oldResponseTime = log.getResponseTime();
-            log.setResponseTime(oldResponseTime + responseTime);
-            log.setOutputPayloadSize(outputPayloadSize);
+            logInfo = optionalLog.get();
+            Long oldResponseTime = logInfo.getResponseTime();
+            logInfo.setResponseTime(oldResponseTime + responseTime);
+            logInfo.setOutputPayloadSize(outputPayloadSize);
         }
         else {
-            log = new Log(api, inputPayloadSize, outputPayloadSize, responseTime, statusCode, requestId, componentName);
+            logInfo = new LogInfo(api, inputPayloadSize, outputPayloadSize, responseTime, statusCode, requestId, componentName);
         }
-        logRepository.save(log);
+        logInfoRepository.save(logInfo);
     }
 }

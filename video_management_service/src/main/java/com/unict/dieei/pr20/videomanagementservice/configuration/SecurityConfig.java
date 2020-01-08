@@ -1,5 +1,6 @@
-package com.unict.dieei.pr20.videomanagementservice;
+package com.unict.dieei.pr20.videomanagementservice.configuration;
 
+import com.unict.dieei.pr20.videomanagementservice.logging.LogFilter;
 import com.unict.dieei.pr20.videomanagementservice.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

@@ -14,23 +14,27 @@ services:
     volumes:
       - storage:/var/video
     links:
-      - db
       - video_processing_service
+      - app_db
+      - log_db
     environment:
       HOST_NAME: video_management_service
-      DB_NAME: videoserver
-      DB_USER: videoserveruser
-      DB_PASSWORD: videoserverPR20!
-  db:
+      DB_APP_NAME: videoserver
+      DB_APP_USER: videoserver_user
+      DB_APP_PASSWORD: videoserverPR20!
+      DB_LOG_NAME: log
+      DB_LOG_USER: log_user
+      DB_LOG_PASSWORD: logPR20!
+  app_db:
     image: mysql
     restart: on-failure:5
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: videoserver
-      MYSQL_USER: videoserveruser
+      MYSQL_USER: videoserver_user
       MYSQL_PASSWORD: videoserverPR20!
     volumes:
-      - db-data:/var/lib/mysql:rw
+      - db-app-data:/var/lib/mysql:rw
   video_processing_service:
     build: video_processing_service/
     volumes:
@@ -38,12 +42,23 @@ services:
       - storage:/var/video
       - storage:/var/videofiles
     links:
-      - db
+      - log_db
     environment:
       HOST_NAME: video_processing_service
-      DB_NAME: videoserver
-      DB_USER: videoserveruser
-      DB_PASSWORD: videoserverPR20!
+      DB_NAME: log
+      DB_USER: log_user
+      DB_PASSWORD: logPR20!
+  log_db:
+    image: mysql
+    restart: on-failure:5
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: log
+      MYSQL_USER: log_user
+      MYSQL_PASSWORD: logPR20!
+    volumes:
+      - db-log-data:/var/lib/mysql:rw
 volumes:
   storage:
-  db-data:
+  db-app-data:
+  db-log-data:
