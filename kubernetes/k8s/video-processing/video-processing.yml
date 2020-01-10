@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: video-processing
+spec:
+  ports:
+    - port: 5000
+  selector:
+    app: video-processing
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-processing
+spec:
+  selector:
+    matchLabels:
+      app: video-processing
+  template:
+    metadata:
+      labels:
+        app: video-processing
+    spec:
+      containers:
+      - name: video-processing
+        image: video-processing-service:2.0.0
+        envFrom:
+          - configMapRef:
+              name: video-processing-env
+          - secretRef:
+              name: video-processing-secret
+        ports:
+          - containerPort: 5000
+        volumeMounts:
+          - mountPath: /app
+            name: code-volume
+          - mountPath: /var/video
+            name: storage
+          - mountPath: /var/videofiles
+            name: storage
+      volumes:
+      - name: code-volume
+        hostPath:
+          path: /video-processing
+          type: Directory
+      - name: storage
+        hostPath:
+          path: /storage-volume
+          type: DirectoryOrCreate

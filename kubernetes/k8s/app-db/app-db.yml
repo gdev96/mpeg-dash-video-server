@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-db
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: app-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-db
+spec:
+  selector:
+    matchLabels:
+      app: app-db
+  template:
+    metadata:
+      labels:
+        app: app-db
+    spec:
+      containers:
+      - name: app-db
+        image: mysql:8
+        envFrom:
+          - configMapRef:
+              name: app-db-env
+          - secretRef:
+              name: app-db-secret
+        ports:
+          - containerPort: 3306
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: app-db-data
+      volumes:
+      - name: app-db-data
+        hostPath:
+          path: /app-db-volume
+          type: DirectoryOrCreate
