@@ -1,7 +1,7 @@
 version: '3'
 services:
   api_gateway:
-    image: gdev96/api-gateway:1
+    image: gdev96/api-gateway:1.0.1
     ports:
       - "8080:80"
     volumes:
@@ -9,7 +9,7 @@ services:
     links:
       - video_management_service
   video_management_service:
-    image: gdev96/video-management-service:1
+    image: gdev96/video-management-service:1.1.0
     volumes:
       - storage:/var/video
     links:
@@ -25,7 +25,7 @@ services:
       DB_LOG_USER: log_user
       DB_LOG_PASSWORD: logPR20!
   app_db:
-    image: mysql
+    image: mysql:8
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -33,9 +33,9 @@ services:
       MYSQL_USER: videoserver_user
       MYSQL_PASSWORD: videoserverPR20!
     volumes:
-      - db-app-data:/var/lib/mysql:rw
+      - app-db-data:/var/lib/mysql:rw
   video_processing_service:
-    image: gdev96/video-processing-service:1
+    image: gdev96/video-processing-service:1.1.0
     volumes:
       - storage:/var/video
       - storage:/var/videofiles
@@ -47,7 +47,7 @@ services:
       DB_USER: log_user
       DB_PASSWORD: logPR20!
   log_db:
-    image: mysql
+    image: mysql:8
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -55,8 +55,8 @@ services:
       MYSQL_USER: log_user
       MYSQL_PASSWORD: logPR20!
     volumes:
-      - db-log-data:/var/lib/mysql:rw
+      - log-db-data:/var/lib/mysql:rw
 volumes:
   storage:
-  db-app-data:
-  db-log-data:
+  app-db-data:
+  log-db-data:
