@@ -9,7 +9,7 @@ services:
     links:
       - video_management_service
   video_management_service:
-    image: gdev96/video-management-service:1.1.0
+    image: gdev96/video-management-service:1.1.1
     volumes:
       - storage:/var/video
     links:
@@ -18,12 +18,12 @@ services:
       - log_db
     environment:
       HOST_NAME: video_management_service
-      DB_APP_NAME: videoserver
-      DB_APP_USER: videoserver_user
-      DB_APP_PASSWORD: videoserverPR20!
-      DB_LOG_NAME: log
-      DB_LOG_USER: log_user
-      DB_LOG_PASSWORD: logPR20!
+      APP_DB_NAME: videoserver
+      APP_DB_USER: videoserver_user
+      APP_DB_PASSWORD: videoserverPR20!
+      LOG_DB_NAME: log
+      LOG_DB_USER: log_user
+      LOG_DB_PASSWORD: logPR20!
   app_db:
     image: mysql:8
     restart: always
@@ -35,7 +35,7 @@ services:
     volumes:
       - app-db-data:/var/lib/mysql:rw
   video_processing_service:
-    image: gdev96/video-processing-service:1.1.0
+    image: gdev96/video-processing-service:1.1.1
     volumes:
       - storage:/var/video
       - storage:/var/videofiles

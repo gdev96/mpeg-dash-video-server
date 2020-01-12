@@ -6,7 +6,9 @@ import com.unict.dieei.pr20.videomanagementservice.exception.RestException;
 import com.unict.dieei.pr20.videomanagementservice.repository.videoserver.UserRepository;
 import com.unict.dieei.pr20.videomanagementservice.repository.videoserver.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,12 @@ public class VideoService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Value(value="${KAFKA_MAIN_TOPIC}")
+    private String mainTopic;
+
     public Video addVideo(Authentication auth, Video video) {
         Optional<User> optionalUser = userRepository.findByEmail(auth.getName());
         User user = optionalUser.get();
@@ -40,7 +48,7 @@ public class VideoService {
         return videoRepository.save(video);
     }
 
-    public Object[] uploadVideo(Authentication auth, Integer id, String requestId, MultipartFile file) {
+    public Video uploadVideo(Authentication auth, Integer id, Long requestId, MultipartFile file) {
         Optional<User> optionalUser = userRepository.findByEmail(auth.getName());
         User user = optionalUser.get();
         Optional<Video> optionalVideo = videoRepository.findById(id);
@@ -50,6 +58,9 @@ public class VideoService {
         Video video = optionalVideo.get();
         if(!video.getUser().equals(user)) {
             throw new RestException("Requested resource belongs to another user", HttpStatus.FORBIDDEN);
+        }
+        if(!video.getState().equals("WaitingUpload")) {
+            throw new RestException("Video already uploaded", HttpStatus.BAD_REQUEST);
         }
 
         // Save video file to disk
@@ -63,38 +74,26 @@ public class VideoService {
             throw new RestException("Video file already exists", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        // Send POST request to video processing service
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-REQUEST-ID", requestId);
-        String body = "{\"videoId\":" + id + "}";
-        URI url = URI.create("http://video-processing:5000/videos/process");
-        RequestEntity<String> request = new RequestEntity<>(body, headers, HttpMethod.POST, url);
-        long sendTime = System.currentTimeMillis();
-
-        // Send request and get response
-        ResponseEntity<String> response = restTemplate.exchange(request, String.class);
-
-        long communicationDelay = System.currentTimeMillis() - sendTime;
-
-        if(response.getStatusCode() != HttpStatus.CREATED) {
-            throw new RestException(response.getBody(), response.getStatusCode());
-        }
+        // Send message to Kafka
+        kafkaTemplate.send(mainTopic, "process|" + video.getId() + "|" + requestId);
 
         video.setState("Uploaded");
-        Video savedVideo = videoRepository.save(video);
 
-        return new Object[]{savedVideo, communicationDelay};
+        return videoRepository.save(video);
     }
 
     public Iterable<Video> getAllVideos() {
         return videoRepository.findAll();
     }
 
-    public void checkVideoExistence(Integer id) {
-        if(!videoRepository.existsById(id)) {
+    public void isVideoAvailable(Integer id) {
+        Optional<Video> optionalVideo = videoRepository.findById(id);
+        if(!optionalVideo.isPresent()) {
             throw new RestException("Requested video not found", HttpStatus.NOT_FOUND);
+        }
+        Video video = optionalVideo.get();
+        if(!video.getState().equals("Available")) {
+            throw new RestException("Video not available", HttpStatus.NOT_FOUND);
         }
     }
 }

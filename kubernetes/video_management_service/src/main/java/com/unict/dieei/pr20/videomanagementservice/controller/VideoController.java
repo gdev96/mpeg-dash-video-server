@@ -27,12 +27,9 @@ public class VideoController {
     public @ResponseBody ResponseEntity<Video> uploadVideo(Authentication auth, @PathVariable Integer id,
                                                            @RequestHeader("X-REQUEST-ID") String[] requestIds,
                                                            @RequestParam("file") MultipartFile file) {
-        Object[] responseValues = videoService.uploadVideo(auth, id, requestIds[1], file);
-        Video uploadedVideo = (Video)responseValues[0];
-        Long communicationDelay = (Long)responseValues[1];
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Communication-Delay", String.valueOf(communicationDelay));
-        return new ResponseEntity<>(uploadedVideo, headers, HttpStatus.CREATED);
+        Long requestId = Long.parseLong(requestIds[1].replace(".", ""));
+        Video uploadedVideo = videoService.uploadVideo(auth, id, requestId, file);
+        return new ResponseEntity<>(uploadedVideo, HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -43,7 +40,7 @@ public class VideoController {
 
     @GetMapping(path = "/{id}")
     public @ResponseBody ResponseEntity<Void> getVideo(@PathVariable Integer id) {
-        videoService.checkVideoExistence(id);
+        videoService.isVideoAvailable(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create("/videofiles/" + id + "/video.mpd"));
         return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);

@@ -11,10 +11,9 @@ echo "Mounting directories..."
 
 if ! pgrep -x 'minikube' > /dev/null
 then
-  minikube mount ../storage_manager:/storage-manager &
-  sleep 1
-  minikube mount ../video_processing_service:/video-processing &
-  sleep 1
+  start-stop-daemon -b -S -n minikube-1 -x ~/minikube mount -- ~/video-server/kubernetes/storage_manager:/storage-manager
+  start-stop-daemon -b -S -n minikube-2 -x ~/minikube mount -- ~/video-server/kubernetes/video_processing_service:/video-processing
+  echo "Directories successfully mounted!"
 else
   echo "No directory to mount!"
 fi

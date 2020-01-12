@@ -13,6 +13,7 @@ echo "Starting services and deployments..."
 kubectl apply -f log-db
 kubectl apply -f app-db
 kubectl apply -f storage-manager
+kubectl apply -f kafka
 kubectl apply -f video-processing
 kubectl apply -f video-management
 kubectl apply -f api-gateway
