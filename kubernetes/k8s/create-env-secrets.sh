@@ -23,3 +23,9 @@ kubectl get configmap video-processing-env -o yaml > video-processing/video-proc
 
 kubectl create secret generic video-processing-secret --from-env-file=./video-processing/video-processing.secret.properties --save-config
 kubectl get secret video-processing-secret -o yaml > video-processing/video-processing.secret.yml
+
+kubectl create configmap spout-env --from-env-file=./spout/spout.env.properties --save-config
+kubectl get configmap spout-env -o yaml > spout/spout.configmap.yml
+
+kubectl create secret generic spout-secret --from-env-file=./spout/spout.secret.properties --save-config
+kubectl get secret spout-secret -o yaml > spout/spout.secret.yml

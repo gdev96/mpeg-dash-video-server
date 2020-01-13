@@ -6,16 +6,12 @@ import com.unict.dieei.pr20.videomanagementservice.model.videoserver.Video;
 import com.unict.dieei.pr20.videomanagementservice.repository.log.LogInfoRepository;
 import com.unict.dieei.pr20.videomanagementservice.repository.videoserver.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.File;
 
 @Service
 @Transactional
@@ -40,29 +36,39 @@ public class KafkaListenerService {
         Integer videoId = Integer.parseInt(messageParts[1]);
         Long requestId = Long.parseLong(messageParts[2]);
 
+        int statusCode;
         if(status.equals("processed")) {
+            statusCode = 200;
             Video video = videoRepository.findById(videoId).get();
             video.setState("Available");
             videoRepository.save(video);
         }
         else if(status.equals("processingFailed")) {
+            statusCode = 500;
             Video video = videoRepository.findById(videoId).get();
             video.setState("NotAvailable");
             videoRepository.save(video);
-            try {
-                Files.delete(Paths.get("/var/video/" + videoId));
-            } catch (IOException e) {
-                throw new RestException("Unable to delete video files", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+
+            // Delete pending files
+            File dir = new File("/var/video/" + videoId);
+            File[] files = dir.listFiles();
+            if(files != null)
+                for(File file : files)
+                    if(!file.delete())
+                        throw new RestException("Unable to delete video files", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else {
+            return;
         }
         // Timestamp finish time and evaluate response time
         long responseTime = System.currentTimeMillis() - arrivalTime;
 
-        // Update response time in logs
+        String api = "KAFKA";
         String componentName = System.getenv("HOST_NAME");
-        LogInfo logInfo = logInfoRepository.findByRequestIdAndComponentName(requestId, componentName).get();
-        Long oldResponseTime = logInfo.getResponseTime();
-        logInfo.setResponseTime(oldResponseTime + responseTime);
+        int inputPayloadSize = message.length();
+        int outputPayloadSize = 0;
+
+        LogInfo logInfo = new LogInfo(api, inputPayloadSize, outputPayloadSize, responseTime, statusCode, requestId, componentName);
         logInfoRepository.save(logInfo);
     }
 }

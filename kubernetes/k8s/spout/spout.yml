@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spout
+spec:
+  selector:
+    matchLabels:
+      app: spout
+  template:
+    metadata:
+      labels:
+        app: spout
+    spec:
+      containers:
+      - name: spout
+        image: spout:2.0.0
+        envFrom:
+          - configMapRef:
+              name: spout-env
+          - secretRef:
+              name: spout-secret
+        volumeMounts:
+          - mountPath: /app
+            name: code-volume
+      volumes:
+      - name: code-volume
+        hostPath:
+          path: /spout
+          type: Directory

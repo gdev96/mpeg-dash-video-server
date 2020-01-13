@@ -1,9 +1,6 @@
-from flask import g
 from flask import Flask
-from flask import request
 from kafka import KafkaConsumer
 from kafka import KafkaProducer
-import logging
 from multiprocessing import Process
 import mysql.connector
 import os
@@ -12,8 +9,6 @@ from time import time
 
 
 app = Flask(__name__)
-
-logging.basicConfig(level=logging.DEBUG)
 
 
 def write_logs(api, component_name, input_payload_size, output_payload_size, response_time, status_code, request_id):
@@ -48,10 +43,11 @@ def encode_videos():
 
     producer = KafkaProducer(bootstrap_servers=[os.environ["KAFKA_ADDRESS"]])
 
-    app.logger.info("Kafka consumer and producer created")
+    print("Kafka consumer and producer created")
+    print("Waiting for messages...")
 
     for message in consumer:
-        app.logger.info("Received message: " + message.value.decode("utf-8"))
+        print("Received message: " + message.value.decode("utf-8"))
 
         # Timestamp arrival time
         arrival_time = time()
@@ -91,49 +87,13 @@ def encode_videos():
 
 @app.before_first_request
 def before_first_request_callback():
-    print("App started")
     p = Process(target=encode_videos)
     p.start()
-
-
-@app.before_request
-def before_request_callback():
-    # Timestamp arrival time
-    arrival_time = time()
-    setattr(g, "Arrival-Time", arrival_time)
 
 
 @app.route("/ping", methods=["GET"])
 def ping():
     response = app.make_response(("pong", 200))
-    return response
-
-
-@app.after_request
-def after_request_callback(response):
-    # Timestamp finish time
-    finish_time = time()
-
-    # Get arrival time
-    arrival_time = getattr(g, "Arrival-Time")
-
-    # Evaluate response time
-    response_time = int(round((finish_time - arrival_time) * 1000))
-
-    # Get logs info
-    component_name = os.environ["HOST_NAME"]
-    api = request.method + " " + request.path
-    input_payload_size = request.content_length
-    if input_payload_size is None:
-        input_payload_size = 0
-    request_id = request.headers.get("X-REQUEST-ID").replace(".", "")
-    output_payload_size = response.content_length
-    status_code = response.status_code
-
-    # Connect to DB and write logs
-    write_logs(api, component_name, input_payload_size, output_payload_size, response_time, status_code, request_id)
-
-    # IMPORTANT: Return response
     return response
 
 

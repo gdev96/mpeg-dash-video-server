@@ -31,6 +31,18 @@ spec:
               name: video-processing-secret
         ports:
           - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 15
         volumeMounts:
           - mountPath: /app
             name: code-volume

@@ -1,0 +1,18 @@
+apiVersion: v1
+data:
+  DB_HOST: log-db
+  DB_NAME: log
+  KAFKA_ADDRESS: apache-kafka:9092
+  KAFKA_MAIN_TOPIC: logs
+  PRODUCTION_TIME: "10"
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"kind":"ConfigMap","apiVersion":"v1","metadata":{"name":"spout-env","creationTimestamp":null},"data":{"DB_HOST":"log-db","DB_NAME":"log","KAFKA_ADDRESS":"apache-kafka:9092","KAFKA_MAIN_TOPIC":"logs","PRODUCTION_TIME":"10"}}
+  creationTimestamp: "2020-01-13T19:56:37Z"
+  name: spout-env
+  namespace: default
+  resourceVersion: "61744"
+  selfLink: /api/v1/namespaces/default/configmaps/spout-env
+  uid: dc64950e-4487-4634-8160-6668c40d0012

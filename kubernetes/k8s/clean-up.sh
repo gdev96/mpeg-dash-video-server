@@ -5,10 +5,10 @@ echo "Unmounting directories..."
 if pgrep -x 'minikube' > /dev/null
 then
   echo "$(pgrep -cx 'minikube') active mounts found!"
-  start-stop-daemon -K -x ~/minikube
+  pkill -x minikube
 
-  # Wait that directories have been successfully unmounted
-  sleep 5
+  # Wait that directories have been unmounted
+  sleep 2
 
   echo "Directories successfully unmounted!"
 else
