@@ -13,23 +13,23 @@ public class LogInfo {
     @NotNull(message = "The API parameter must not be blank!")
     private String api;
 
+    @NotNull(message = "The Component Name parameter must not be blank!")
+    private String componentName;
+
     @NotNull(message = "The Input Payload Size parameter must not be blank!")
     private Integer inputPayloadSize;
 
     @NotNull(message = "The Output Payload Size parameter must not be blank!")
     private Integer outputPayloadSize;
 
+    @NotNull(message = "The X-REQUEST-ID parameter must not be blank!")
+    private Long requestId;
+
     @NotNull(message = "The Response Time parameter must not be blank!")
     private Long responseTime;
 
     @NotNull(message = "The Status Code parameter must not be blank!")
     private Integer statusCode;
-
-    @NotNull(message = "The X-REQUEST-ID parameter must not be blank!")
-    private Long requestId;
-
-    @NotNull(message = "The Component Name parameter must not be blank!")
-    private String componentName;
 
     public LogInfo() {}
 

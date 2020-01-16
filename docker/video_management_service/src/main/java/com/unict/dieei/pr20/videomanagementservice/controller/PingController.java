@@ -23,17 +23,13 @@ public class PingController {
         headers.set("X-REQUEST-ID", requestId);
         URI url = URI.create("http://video_processing_service_1:5000/ping");
         RequestEntity<String> request = new RequestEntity<>(headers, HttpMethod.GET, url);
-        HttpHeaders responseHeaders = new HttpHeaders();
-        String responseBody = null;
-        long sendTime = System.currentTimeMillis();
+        String responseBody;
         try {
             ResponseEntity<String> response = restTemplate.exchange(request, String.class);
             responseBody = "pong [Video Management Service]<br>" + response.getBody();
         } catch(ResourceAccessException e) {
             responseBody = "pong [Video Management Service]<br>Video Processing Service not running";
         }
-        long communicationDelay = System.currentTimeMillis() - sendTime;
-        responseHeaders.set("X-Communication-Delay", String.valueOf(communicationDelay));
-        return new ResponseEntity<>(responseBody, responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 }

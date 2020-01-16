@@ -2,6 +2,9 @@
 
 echo "Stopping services and deployments..."
 
+kubectl get pods --no-headers=true | awk '/spark/{print $1}' | xargs kubectl delete pod
+kubectl delete clusterrolebinding spark-role
+kubectl delete serviceaccount spark
 kubectl delete -f api-gateway
 kubectl delete -f spout
 kubectl delete -f video-management

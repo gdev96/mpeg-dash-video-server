@@ -8,6 +8,8 @@ docker build -t storage-manager:1.0.0 ../storage_manager
 docker build -t video-management-service:2.0.0 ../video_management_service
 docker build -t video-processing-service:2.0.0 ../video_processing_service
 docker build -t spout:2.0.0 ../spout
+docker build -t spark:2.0.0 ../spark
+docker build -t kafka-client:1.0.0 ../kafka-client
 
 echo "Mounting directories..."
 
@@ -36,3 +38,5 @@ kubectl apply -f video-processing
 kubectl apply -f video-management
 kubectl apply -f spout
 kubectl apply -f api-gateway
+kubectl create serviceaccount spark
+kubectl create clusterrolebinding spark-role --clusterrole=edit --serviceaccount=default:spark

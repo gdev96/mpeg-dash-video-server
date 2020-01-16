@@ -1,14 +1,9 @@
-from flask import Flask
 from kafka import KafkaConsumer
 from kafka import KafkaProducer
-from multiprocessing import Process
 import mysql.connector
 import os
 import subprocess
 from time import time
-
-
-app = Flask(__name__)
 
 
 def write_logs(api, component_name, input_payload_size, output_payload_size, response_time, status_code, request_id):
@@ -34,7 +29,7 @@ def write_logs(api, component_name, input_payload_size, output_payload_size, res
     cnx.close()
 
 
-def encode_videos():
+if __name__ == "__main__":
     consumer = KafkaConsumer(
         os.environ["KAFKA_MAIN_TOPIC"],
         bootstrap_servers=[os.environ["KAFKA_ADDRESS"]],
@@ -83,19 +78,3 @@ def encode_videos():
 
             # Connect to DB and write logs
             write_logs(api, component_name, input_payload_size, output_payload_size, response_time, status_code, request_id)
-
-
-@app.before_first_request
-def before_first_request_callback():
-    p = Process(target=encode_videos)
-    p.start()
-
-
-@app.route("/ping", methods=["GET"])
-def ping():
-    response = app.make_response(("pong", 200))
-    return response
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0")

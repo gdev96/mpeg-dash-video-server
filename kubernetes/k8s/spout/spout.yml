@@ -22,6 +22,13 @@ spec:
         volumeMounts:
           - mountPath: /app
             name: code-volume
+      initContainers:
+      - name: wait-kafka
+        image: kafka-client:1.0.0
+        command: ["sh", "-c", "kafka-console-producer.sh --broker-list $(KAFKA_ADDRESS) --topic $(KAFKA_MAIN_TOPIC)"]
+        envFrom:
+        - configMapRef:
+            name: spout-env
       volumes:
       - name: code-volume
         hostPath:

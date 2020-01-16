@@ -31,18 +31,6 @@ spec:
               name: video-processing-secret
         ports:
           - containerPort: 5000
-        livenessProbe:
-          httpGet:
-            path: /ping
-            port: 5000
-          initialDelaySeconds: 30
-          periodSeconds: 15
-        readinessProbe:
-          httpGet:
-            path: /ping
-            port: 5000
-          initialDelaySeconds: 10
-          periodSeconds: 15
         volumeMounts:
           - mountPath: /app
             name: code-volume
@@ -50,6 +38,13 @@ spec:
             name: storage
           - mountPath: /var/videofiles
             name: storage
+      initContainers:
+      - name: wait-kafka
+        image: kafka-client:1.0.0
+        command: ["sh", "-c", "kafka-console-producer.sh --broker-list $(KAFKA_ADDRESS) --topic $(KAFKA_MAIN_TOPIC)"]
+        envFrom:
+        - configMapRef:
+            name: video-processing-env
       volumes:
       - name: code-volume
         hostPath:

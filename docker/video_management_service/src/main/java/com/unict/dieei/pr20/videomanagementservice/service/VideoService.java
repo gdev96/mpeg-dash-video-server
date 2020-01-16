@@ -40,7 +40,7 @@ public class VideoService {
         return videoRepository.save(video);
     }
 
-    public Object[] uploadVideo(Authentication auth, Integer id, String requestId, MultipartFile file) {
+    public Video uploadVideo(Authentication auth, Integer id, String requestId, MultipartFile file) {
         Optional<User> optionalUser = userRepository.findByEmail(auth.getName());
         User user = optionalUser.get();
         Optional<Video> optionalVideo = videoRepository.findById(id);
@@ -71,21 +71,17 @@ public class VideoService {
         String body = "{\"videoId\":" + id + "}";
         URI url = URI.create("http://video_processing_service_1:5000/videos/process");
         RequestEntity<String> request = new RequestEntity<>(body, headers, HttpMethod.POST, url);
-        long sendTime = System.currentTimeMillis();
 
         // Send request and get response
         ResponseEntity<String> response = restTemplate.exchange(request, String.class);
-
-        long communicationDelay = System.currentTimeMillis() - sendTime;
 
         if(response.getStatusCode() != HttpStatus.CREATED) {
             throw new RestException(response.getBody(), response.getStatusCode());
         }
 
         video.setState("Uploaded");
-        Video savedVideo = videoRepository.save(video);
 
-        return new Object[]{savedVideo, communicationDelay};
+        return videoRepository.save(video);
     }
 
     public Iterable<Video> getAllVideos() {

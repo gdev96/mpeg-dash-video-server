@@ -13,12 +13,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull(message = "The name parameter must not be blank!")
-    private String name;
-
     @NotNull(message = "The email parameter must not be blank!")
     @Column(unique = true)
     private String email;
+
+    @NotNull(message = "The name parameter must not be blank!")
+    private String name;
 
     @NotNull(message = "The password parameter must not be blank!")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

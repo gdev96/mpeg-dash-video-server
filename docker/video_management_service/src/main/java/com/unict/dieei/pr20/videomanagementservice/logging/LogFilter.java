@@ -39,18 +39,8 @@ public class LogFilter extends GenericFilterBean {
             // Perform request
             filterChain.doFilter(requestWrapper, responseWrapper);
 
-            // Timestamp finish time
-            long finishTime = System.currentTimeMillis();
-
-            // Get eventual communication delay
-            long responseTime;
-            if(responseWrapper.containsHeader("X-Communication-Delay")) {
-                long communicationDelay = Long.parseLong(responseWrapper.getHeader("X-Communication-Delay"));
-                responseTime = finishTime - arrivalTime - communicationDelay;
-            }
-            else {
-                responseTime = finishTime - arrivalTime;
-            }
+            // Timestamp finish time and get response time
+            long responseTime = System.currentTimeMillis() - arrivalTime;
 
             // Get logs info
             String requestUri = requestWrapper.getRequestURI();

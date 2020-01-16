@@ -10,11 +10,11 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull(message = "The name parameter must not be blank!")
-    private String name;
-
     @NotNull(message = "The author parameter must not be blank!")
     private String author;
+
+    @NotNull(message = "The name parameter must not be blank!")
+    private String name;
 
     @NotNull(message = "The state parameter must not be blank!")
     private String state;
