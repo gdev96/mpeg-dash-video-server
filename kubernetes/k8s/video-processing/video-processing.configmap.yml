@@ -11,9 +11,9 @@ metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
       {"kind":"ConfigMap","apiVersion":"v1","metadata":{"name":"video-processing-env","creationTimestamp":null},"data":{"DB_HOST":"log-db","DB_NAME":"log","HOST_NAME":"video_processing_service","KAFKA_ADDRESS":"apache-kafka:9092","KAFKA_GROUP_ID":"video-processing-group","KAFKA_MAIN_TOPIC":"videos"}}
-  creationTimestamp: "2020-01-13T19:56:37Z"
+  creationTimestamp: "2020-01-17T20:34:38Z"
   name: video-processing-env
   namespace: default
-  resourceVersion: "61742"
+  resourceVersion: "196031"
   selfLink: /api/v1/namespaces/default/configmaps/video-processing-env
-  uid: e818f670-a1fa-46a6-9fa1-662b4f40bd83
+  uid: ac2194d0-a664-4ecc-be22-a7997c98048a

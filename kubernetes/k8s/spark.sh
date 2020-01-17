@@ -15,4 +15,7 @@ eval $(minikube docker-env)
     --conf spark.kubernetes.driverEnv.KAFKA_GROUP_ID=spark-group \
     --conf spark.kubernetes.driverEnv.KAFKA_MAIN_TOPIC=logs \
     --conf spark.kubernetes.driverEnv.BATCH_SIZE=30 \
+    --conf spark.kubernetes.driverEnv.LAST_BATCHES=3 \
+    --conf spark.kubernetes.driverEnv.CHAT_ID=-375918085 \
+    --conf spark.kubernetes.driverEnv.BOT_TOKEN=927700725:AAEVZvHCiWvZRdrkj8whRaYxbm7jpOyGyqA \
     local:///opt/spark/work-dir/spark-1.0-SNAPSHOT-jar-with-dependencies.jar
