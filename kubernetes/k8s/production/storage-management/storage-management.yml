@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: storage-management
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: storage-management
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storage-management
+spec:
+  selector:
+    matchLabels:
+      app: storage-management
+  template:
+    metadata:
+      labels:
+        app: storage-management
+    spec:
+      containers:
+      - name: storage-management
+        image: gdev96/storage-management-service:1.0.0
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - mountPath: /var/videofiles
+            name: storage
+      volumes:
+      - name: storage
+        hostPath:
+          path: /storage-volume
+          type: DirectoryOrCreate

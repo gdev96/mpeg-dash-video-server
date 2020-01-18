@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: log-db
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: log-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-db
+spec:
+  selector:
+    matchLabels:
+      app: log-db
+  template:
+    metadata:
+      labels:
+        app: log-db
+    spec:
+      containers:
+      - name: log-db
+        image: mysql:8
+        envFrom:
+          - configMapRef:
+              name: log-db-env
+          - secretRef:
+              name: log-db-secret
+        ports:
+          - containerPort: 3306
+        volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: log-db-data
+      volumes:
+      - name: log-db-data
+        hostPath:
+          path: /log-db-volume
+          type: DirectoryOrCreate

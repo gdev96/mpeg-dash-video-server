@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: storage-management
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: storage-management
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storage-management
+spec:
+  selector:
+    matchLabels:
+      app: storage-management
+  template:
+    metadata:
+      labels:
+        app: storage-management
+    spec:
+      containers:
+      - name: storage-management
+        image: storage-management-service:1.0.0
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - mountPath: /webapp
+            name: code-volume
+          - mountPath: /var/videofiles
+            name: storage
+      volumes:
+      - name: code-volume
+        hostPath:
+          path: /storage-management
+          type: Directory
+      - name: storage
+        hostPath:
+          path: /storage-volume
+          type: DirectoryOrCreate

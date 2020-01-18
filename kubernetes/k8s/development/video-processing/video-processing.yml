@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-processing
+spec:
+  selector:
+    matchLabels:
+      app: video-processing
+  template:
+    metadata:
+      labels:
+        app: video-processing
+    spec:
+      containers:
+      - name: video-processing
+        image: video-processing-service:2.0.0
+        envFrom:
+          - configMapRef:
+              name: video-processing-env
+          - secretRef:
+              name: video-processing-secret
+        volumeMounts:
+          - mountPath: /app
+            name: code-volume
+          - mountPath: /var/video
+            name: storage
+          - mountPath: /var/videofiles
+            name: storage
+      initContainers:
+      - name: wait-kafka
+        image: kafka-client:1.0.0
+        command: ["sh", "-c", "kafka-console-producer.sh --broker-list $(KAFKA_ADDRESS) --topic $(KAFKA_MAIN_TOPIC)"]
+        envFrom:
+        - configMapRef:
+            name: video-processing-env
+      volumes:
+      - name: code-volume
+        hostPath:
+          path: /video-processing
+          type: Directory
+      - name: storage
+        hostPath:
+          path: /storage-volume
+          type: DirectoryOrCreate

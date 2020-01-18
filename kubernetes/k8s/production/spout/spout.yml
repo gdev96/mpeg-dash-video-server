@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spout
+spec:
+  selector:
+    matchLabels:
+      app: spout
+  template:
+    metadata:
+      labels:
+        app: spout
+    spec:
+      containers:
+      - name: spout
+        image: gdev96/spout:1.0.0
+        envFrom:
+          - configMapRef:
+              name: spout-env
+          - secretRef:
+              name: spout-secret
+      initContainers:
+      - name: wait-kafka
+        image: gdev96/kafka-client:1.0.0
+        command: ["sh", "-c", "kafka-console-producer.sh --broker-list $(KAFKA_ADDRESS) --topic $(KAFKA_MAIN_TOPIC)"]
+        envFrom:
+        - configMapRef:
+            name: spout-env

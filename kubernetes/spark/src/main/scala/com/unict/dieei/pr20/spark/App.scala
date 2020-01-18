@@ -102,6 +102,9 @@ object App {
       if(!rdd.isEmpty()) {
         lastsOverallMeanTime = rdd.collect()(0)
         if(overallMeanTime > 0) {
+          val logMessage = "Overall Mean Time:\n" + overallMeanTime + "\nComponent Name:\n" + componentName +
+            "\nComponent Response Time:\n" + componentResponseTime + "\nLasts Overall Mean Time:\n" + lastsOverallMeanTime
+          Http(url).param("chat_id", chat).param("text", logMessage).asString
           if(overallMeanTime > 1.2 * lastsOverallMeanTime) {
             // Send message to Telegram BOT
             val increment = (overallMeanTime.toFloat / lastsOverallMeanTime - 1) * 100
@@ -110,10 +113,6 @@ object App {
               "tempo medio di " + componentResponseTime
             Http(url).param("chat_id", chat).param("text", alertMessage).asString
           }
-          val logMessage = "Overall Mean Time:\n" + overallMeanTime + "\nComponent Name:\n" + componentName +
-            "\nComponent Response Time:\n" + componentResponseTime + "\nLasts Overall Mean Time:\n" + lastsOverallMeanTime
-          Http(url).param("chat_id", chat).param("text", logMessage).asString
-
           overallMeanTime = 0
           componentName = ""
           componentResponseTime = 0
@@ -121,9 +120,6 @@ object App {
         }
       }
     }
-
-    //windowedOverallMeanTime.print()
-    //slowestComponent.print()
 
     // Start the computation
     ssc.start()
