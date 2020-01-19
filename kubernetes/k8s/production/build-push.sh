@@ -24,8 +24,8 @@ docker push gdev96/spout:1.0.0
 docker push gdev96/spout:1
 docker push gdev96/spout:latest
 
-docker build -t gdev96/spark:1.0.0 -t gdev96/spark:1 -t gdev96/spark:latest -f spark/Dockerfile.prod spark
-docker push gdev96/spark:1.0.0
+docker build -t gdev96/spark:1.0.1 -t gdev96/spark:1 -t gdev96/spark:latest -f spark/Dockerfile.prod spark
+docker push gdev96/spark:1.0.1
 docker push gdev96/spark:1
 docker push gdev96/spark:latest
 

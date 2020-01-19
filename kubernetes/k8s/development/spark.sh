@@ -10,7 +10,7 @@ eval $(minikube docker-env)
     --conf spark.executor.instances=2 \
     --conf spark.kubernetes.executor.request.cores=0.1 \
     --conf spark.kubernetes.authenticate.driver.serviceAccountName=spark \
-    --conf spark.kubernetes.container.image=spark:1.0.0 \
+    --conf spark.kubernetes.container.image=spark:1.0.1 \
     --conf spark.kubernetes.driverEnv.KAFKA_ADDRESS=apache-kafka:9092 \
     --conf spark.kubernetes.driverEnv.KAFKA_GROUP_ID=spark-group \
     --conf spark.kubernetes.driverEnv.KAFKA_MAIN_TOPIC=logs \
