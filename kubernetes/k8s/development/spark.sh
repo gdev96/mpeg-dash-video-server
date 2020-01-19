@@ -3,7 +3,7 @@
 eval $(minikube docker-env)
 
 /usr/local/spark/bin/spark-submit \
-    --master k8s://https://$(minikube ip):8443 \
+    --master k8s://$(minikube ip):8443 \
     --deploy-mode cluster \
     --name spark \
     --class com.unict.dieei.pr20.spark.App \
@@ -16,6 +16,7 @@ eval $(minikube docker-env)
     --conf spark.kubernetes.driverEnv.KAFKA_MAIN_TOPIC=logs \
     --conf spark.kubernetes.driverEnv.BATCH_SIZE=30 \
     --conf spark.kubernetes.driverEnv.LAST_BATCHES=3 \
-    --conf spark.kubernetes.driverEnv.CHAT_ID=-375918085 \
-    --conf spark.kubernetes.driverEnv.BOT_TOKEN=927700725:AAEVZvHCiWvZRdrkj8whRaYxbm7jpOyGyqA \
+    --conf spark.kubernetes.driver.secrets.spark-secret=/etc/secrets \
+    --conf spark.kubernetes.driver.secretKeyRef.CHAT_ID=spark-secret:chat-id \
+    --conf spark.kubernetes.driver.secretKeyRef.BOT_TOKEN=spark-secret:bot-token \
     local:///opt/spark/work-dir/spark-1.0-SNAPSHOT-jar-with-dependencies.jar

@@ -13,9 +13,9 @@ metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
       {"kind":"ConfigMap","apiVersion":"v1","metadata":{"name":"video-management-env","creationTimestamp":null},"data":{"APP_DB_HOST":"app-db","APP_DB_NAME":"videoserver","HOST_NAME":"video_management_service","KAFKA_ADDRESS":"apache-kafka:9092","KAFKA_GROUP_ID":"video-management-group","KAFKA_MAIN_TOPIC":"videos","LOG_DB_HOST":"log-db","LOG_DB_NAME":"log"}}
-  creationTimestamp: "2020-01-17T20:34:38Z"
+  creationTimestamp: 2020-01-18T23:56:20Z
   name: video-management-env
   namespace: default
-  resourceVersion: "196029"
+  resourceVersion: "35867"
   selfLink: /api/v1/namespaces/default/configmaps/video-management-env
-  uid: aba3b652-472e-4bf8-b491-654ae9839695
+  uid: 33cb253f-564f-4bbd-8955-18b5025a1b6a

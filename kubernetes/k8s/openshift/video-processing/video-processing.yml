@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-processing
+  namespace: video-server
+spec:
+  selector:
+    matchLabels:
+      app: video-processing
+  template:
+    metadata:
+      labels:
+        app: video-processing
+    spec:
+      containers:
+      - name: video-processing
+        image: docker-registry.default.svc:5000/video-server/video-processing-service:1.0.0
+        env:
+          - name: HOST_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: video-processing
+                key: host-name
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: video-processing
+                key: db-host
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: log-db
+                key: database-user
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: log-db
+                key: database-password
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: log-db
+                key: database-name
+          - name: KAFKA_ADDRESS
+            valueFrom:
+              secretKeyRef:
+                name: apache-kafka
+                key: kafka-address
+          - name: KAFKA_GROUP_ID
+            valueFrom:
+              configMapKeyRef:
+                name: video-processing
+                key: kafka-group-id
+          - name: KAFKA_MAIN_TOPIC
+            valueFrom:
+              configMapKeyRef:
+                name: video-processing
+                key: kafka-main-topic
+        volumeMounts:
+          - mountPath: /var/video
+            name: storage-data
+          - mountPath: /var/videofiles
+            name: storage-data
+      initContainers:
+      - name: wait-kafka
+        image: docker-registry.default.svc:5000/video-server/kafka-client:1.0.0
+        command: ["sh", "-c", "kafka-console-producer.sh --broker-list $(KAFKA_ADDRESS) --topic $(KAFKA_MAIN_TOPIC)"]
+        env:
+          - name: KAFKA_ADDRESS
+            valueFrom:
+              secretKeyRef:
+                name: apache-kafka
+                key: kafka-address
+          - name: KAFKA_MAIN_TOPIC
+            valueFrom:
+              configMapKeyRef:
+                name: video-processing
+                key: kafka-main-topic
+      volumes:
+        - name: storage-data
+          persistentVolumeClaim:
+            claimName: storage

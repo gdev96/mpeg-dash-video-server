@@ -11,5 +11,6 @@ kubectl apply -f video-processing
 kubectl apply -f video-management
 kubectl apply -f spout
 kubectl apply -f api-gateway
+kubectl apply -f spark
 kubectl create serviceaccount spark
-kubectl create clusterrolebinding spark-role --clusterrole=edit --serviceaccount=default:spark
+kubectl create clusterrolebinding spark-role --clusterrole=edit --serviceaccount=default:spark --namespace=default

@@ -27,7 +27,13 @@ public class VideoController {
     public @ResponseBody ResponseEntity<Video> uploadVideo(Authentication auth, @PathVariable Integer id,
                                                            @RequestHeader("X-REQUEST-ID") String[] requestIds,
                                                            @RequestParam("file") MultipartFile file) {
-        Long requestId = Long.parseLong(requestIds[1].replace(".", ""));
+        long requestId;
+        if(requestIds.length > 1) { // 2 requestIds received (drop the first one added by Ingress)
+            requestId = Long.parseLong(requestIds[1].replace(".", ""));
+        }
+        else { // 1 requestId received
+            requestId = Long.parseLong(requestIds[0].replace(".", ""));
+        }
         Video uploadedVideo = videoService.uploadVideo(auth, id, requestId, file);
         return new ResponseEntity<>(uploadedVideo, HttpStatus.CREATED);
     }

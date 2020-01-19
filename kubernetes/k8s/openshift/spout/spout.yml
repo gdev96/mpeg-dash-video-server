@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spout
+  namespace: video-server
+spec:
+  selector:
+    matchLabels:
+      app: spout
+  template:
+    metadata:
+      labels:
+        app: spout
+    spec:
+      containers:
+      - name: spout
+        image: docker-registry.default.svc:5000/video-server/spout:1.0.0
+        env:
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: spout
+                key: db-host
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: log-db
+                key: database-user
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: log-db
+                key: database-password
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: log-db
+                key: database-name
+          - name: KAFKA_ADDRESS
+            valueFrom:
+              secretKeyRef:
+                name: apache-kafka
+                key: kafka-address
+          - name: KAFKA_MAIN_TOPIC
+            valueFrom:
+              configMapKeyRef:
+                name: spout
+                key: kafka-main-topic
+          - name: PRODUCTION_TIME
+            valueFrom:
+              configMapKeyRef:
+                name: spout
+                key: production-time
+      initContainers:
+      - name: wait-kafka
+        image: docker-registry.default.svc:5000/video-server/kafka-client:1.0.0
+        command: ["sh", "-c", "kafka-console-producer.sh --broker-list $(KAFKA_ADDRESS) --topic $(KAFKA_MAIN_TOPIC)"]
+        env:
+          - name: KAFKA_ADDRESS
+            valueFrom:
+              secretKeyRef:
+                name: apache-kafka
+                key: kafka-address
+          - name: KAFKA_MAIN_TOPIC
+            valueFrom:
+              configMapKeyRef:
+                name: spout
+                key: kafka-main-topic

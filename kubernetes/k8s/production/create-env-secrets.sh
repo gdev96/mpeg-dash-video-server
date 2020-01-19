@@ -29,3 +29,6 @@ kubectl get configmap spout-env -o yaml > spout/spout.configmap.yml
 
 kubectl create secret generic spout-secret --from-env-file=./spout/spout.secret.properties --save-config
 kubectl get secret spout-secret -o yaml > spout/spout.secret.yml
+
+kubectl create secret generic spark-secret --from-env-file=./spark/spark.secret.properties --save-config
+kubectl get secret spark-secret -o yaml > spark/spark.secret.yml

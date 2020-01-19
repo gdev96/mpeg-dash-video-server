@@ -1,0 +1,16 @@
+apiVersion: v1
+data:
+  db-host: log-db
+  kafka-main-topic: logs
+  production-time: "10"
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"kind":"ConfigMap","apiVersion":"v1","metadata":{"name":"spout","creationTimestamp":null},"data":{"db-host":"log-db","kafka-main-topic":"logs","production-time":"10"}}
+  creationTimestamp: 2020-01-19T15:42:11Z
+  name: spout
+  namespace: video-server
+  resourceVersion: "35299529"
+  selfLink: /api/v1/namespaces/video-server/configmaps/spout
+  uid: 42109152-3ad2-11ea-b8d0-069c1d03e046

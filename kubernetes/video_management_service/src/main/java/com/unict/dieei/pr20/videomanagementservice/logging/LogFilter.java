@@ -41,18 +41,8 @@ public class LogFilter extends GenericFilterBean {
             // Perform request
             filterChain.doFilter(requestWrapper, responseWrapper);
 
-            // Timestamp finish time
-            long finishTime = System.currentTimeMillis();
-
-            // Get eventual communication delay
-            long responseTime;
-            if(responseWrapper.containsHeader("X-Communication-Delay")) {
-                long communicationDelay = Long.parseLong(responseWrapper.getHeader("X-Communication-Delay"));
-                responseTime = finishTime - arrivalTime - communicationDelay;
-            }
-            else {
-                responseTime = finishTime - arrivalTime;
-            }
+            // Timestamp finish time and get response time
+            long responseTime = System.currentTimeMillis() - arrivalTime;
 
             // Get logs info
             String requestUri = requestWrapper.getRequestURI();
@@ -69,7 +59,13 @@ public class LogFilter extends GenericFilterBean {
             String api = requestWrapper.getMethod() + " " + requestUri;
 
             ArrayList<String> requestIds = Collections.list(requestWrapper.getHeaders("X-REQUEST-ID"));
-            long requestId = Long.parseLong(requestIds.get(1).replace(".", ""));
+            long requestId;
+            if(requestIds.size() > 1) { // 2 requestIds received (drop the first one added by Ingress)
+                requestId = Long.parseLong(requestIds.get(1).replace(".", ""));
+            }
+            else { // 1 requestId received
+                requestId = Long.parseLong(requestIds.get(0).replace(".", ""));
+            }
             int inputPayloadSize = requestWrapper.getContentLength();
             if(inputPayloadSize == -1) {
                 inputPayloadSize = requestWrapper.getContentAsByteArray().length;

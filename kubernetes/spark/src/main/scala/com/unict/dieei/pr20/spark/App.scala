@@ -39,10 +39,11 @@ object App {
       Subscribe[String, String](topics, kafkaParams)
     )
 
-    var overallMeanTime:Long = 0
-    var componentName:String = ""
-    var componentResponseTime:Long = 0
-    var lastsOverallMeanTime:Long = 0
+    var overallMeanTime : Long = 0
+    var componentName : String = ""
+    var componentResponseTime : Long = 0
+    var lastsOverallMeanTime : Long = 0
+    var windowSize = 0
 
     val logs = stream.map(_.value)
 
@@ -96,14 +97,18 @@ object App {
       .window(Seconds(lastBatches * batchSize), Seconds(batchSize))
       // Calculate mean
       .reduce((a, b) => a + b)
-      .map(a => a / lastBatches)
+      .map(a => a / windowSize)
 
     lastsOverallMeanTimeStream.foreachRDD { rdd =>
+      if(windowSize < lastBatches) {
+        windowSize += 1
+      }
       if(!rdd.isEmpty()) {
         lastsOverallMeanTime = rdd.collect()(0)
         if(overallMeanTime > 0) {
-          val logMessage = "Overall Mean Time:\n" + overallMeanTime + "\nComponent Name:\n" + componentName +
-            "\nComponent Response Time:\n" + componentResponseTime + "\nLasts Overall Mean Time:\n" + lastsOverallMeanTime
+          val logMessage = "Tempo di risposta medio complessivo:\n" + overallMeanTime + "\nNome del componente piu' " +
+            "lento:\n" + componentName + "\nTempo di risposta del componente:\n" + componentResponseTime + "\nTempo " +
+            "medio complessivo degli ultimi batch:\n" + lastsOverallMeanTime
           Http(url).param("chat_id", chat).param("text", logMessage).asString
           if(overallMeanTime > 1.2 * lastsOverallMeanTime) {
             // Send message to Telegram BOT
@@ -113,11 +118,25 @@ object App {
               "tempo medio di " + componentResponseTime
             Http(url).param("chat_id", chat).param("text", alertMessage).asString
           }
+          else {
+            val ratio = (overallMeanTime.toFloat / lastsOverallMeanTime - 1) * 100
+            val alertMessage = "Registrata una variazione del tempo medio di risposta pari a " + ratio + "%. " +
+              "Nessuna anomalia da segnalare"
+            Http(url).param("chat_id", chat).param("text", alertMessage).asString
+          }
           overallMeanTime = 0
           componentName = ""
           componentResponseTime = 0
           lastsOverallMeanTime = 0
         }
+        else {
+          val logMessage = "Nessuna richiesta ricevuta negli ultimi " + batchSize + " secondi"
+          Http(url).param("chat_id", chat).param("text", logMessage).asString
+        }
+      }
+      else {
+        val logMessage = "Nessuna richiesta ricevuta negli ultimi " + windowSize + " batch"
+        Http(url).param("chat_id", chat).param("text", logMessage).asString
       }
     }
 

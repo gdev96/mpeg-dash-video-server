@@ -6,9 +6,9 @@ metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
       {"kind":"ConfigMap","apiVersion":"v1","metadata":{"name":"app-db-env","creationTimestamp":null},"data":{"MYSQL_DATABASE":"videoserver"}}
-  creationTimestamp: "2020-01-17T20:34:37Z"
+  creationTimestamp: 2020-01-18T23:56:18Z
   name: app-db-env
   namespace: default
-  resourceVersion: "196020"
+  resourceVersion: "35857"
   selfLink: /api/v1/namespaces/default/configmaps/app-db-env
-  uid: 7a26ff6c-8a03-4cbf-bcd9-5479e930ee08
+  uid: e4516bd3-df51-4fbe-b6d2-8c2337f470cb
