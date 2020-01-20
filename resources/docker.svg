@@ -206,9 +206,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.9899495"
-     inkscape:cx="158.95732"
-     inkscape:cy="246.67332"
+     inkscape:zoom="1.4"
+     inkscape:cx="345.55294"
+     inkscape:cy="133.12672"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -479,13 +479,18 @@
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.88055563px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="105.43782"
-       y="219.09094"
+       y="217.22006"
        id="text3033"><tspan
          sodipodi:role="line"
          id="tspan3031"
          x="105.43782"
-         y="219.09094"
-         style="font-style:italic;font-size:3.52777767px;stroke-width:0.26458332">/vms(:8080)</tspan></text>
+         y="217.22006"
+         style="font-style:italic;font-size:3.52777767px;stroke-width:0.26458332">/vms</tspan><tspan
+         sodipodi:role="line"
+         x="105.43782"
+         y="222.07076"
+         style="font-style:italic;font-size:3.52777767px;stroke-width:0.26458332"
+         id="tspan188" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -500,41 +505,30 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.88055563px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="110.78181"
-       y="203.13159"
+       x="112.61498"
+       y="202.75362"
        id="text3055-2"><tspan
          sodipodi:role="line"
          id="tspan3053-6"
-         x="110.78181"
-         y="203.13159"
-         style="font-size:2.82222223px;stroke-width:0.26458332">SPRING</tspan></text>
+         x="112.61498"
+         y="202.75362"
+         style="font-size:2.82222223px;stroke-width:0.26458332">Spring</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.88055563px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="111.949"
+       x="113.41898"
        y="154.24834"
        id="text3055-6-0"><tspan
          sodipodi:role="line"
          id="tspan3053-4-4"
-         x="111.949"
+         x="113.41898"
          y="154.24834"
-         style="font-size:2.82222223px;stroke-width:0.26458332">FLASK</tspan></text>
+         style="font-size:2.82222223px;stroke-width:0.26458332">Flask</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 102.63149,180.20322 0.13364,-24.72243"
        id="path3109"
        inkscape:connector-curvature="0" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.88055563px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="103.95615"
-       y="168.74742"
-       id="text3033-8"><tspan
-         sodipodi:role="line"
-         id="tspan3031-7"
-         x="103.95615"
-         y="168.74742"
-         style="font-style:italic;font-size:3.52777767px;stroke-width:0.26458332">(:5000)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.88055563px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -612,17 +606,6 @@
          x="43.505253"
          y="193.09171"
          style="stroke-width:0.26458332">App DB</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.88055563px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="56.932552"
-       y="201.73039"
-       id="text3055-6"><tspan
-         sodipodi:role="line"
-         id="tspan3053-4"
-         x="56.932552"
-         y="201.73039"
-         style="font-size:2.82222223px;stroke-width:0.26458332">MYSQL</tspan></text>
     <rect
        style="fill:#fff6d5;fill-opacity:1;stroke:#000000;stroke-width:0.26458332;stroke-opacity:1"
        id="rect183-3"
@@ -633,14 +616,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.88055563px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="48.583199"
+       x="48.510288"
        y="154.0744"
        id="text3055-6-9"><tspan
          sodipodi:role="line"
          id="tspan3053-4-5"
-         x="48.583199"
+         x="48.510288"
          y="154.0744"
-         style="font-size:2.82222223px;stroke-width:0.26458332">MYSQL</tspan></text>
+         style="font-size:2.82222223px;stroke-width:0.26458332">MySQL</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.93888855px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -678,12 +661,12 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:3.88055563px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="110.00839"
+       x="110.53756"
        y="247.99629"
        id="text3055-6-3"><tspan
          sodipodi:role="line"
          id="tspan3053-4-56"
-         x="110.00839"
+         x="110.53756"
          y="247.99629"
          style="font-size:2.82222223px;stroke-width:0.26458332">NGINX</tspan></text>
     <flowRoot
@@ -1152,5 +1135,16 @@
          y="287.53345"
          style="font-size:4.58611107px;text-align:center;text-anchor:middle;stroke-width:0.26458332"
          id="tspan2708-4-4">Volume</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.88055563px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="57.297016"
+       y="201.67038"
+       id="text3055-6-9-3"><tspan
+         sodipodi:role="line"
+         id="tspan3053-4-5-6"
+         x="57.297016"
+         y="201.67038"
+         style="font-size:2.82222223px;stroke-width:0.26458332">MySQL</tspan></text>
   </g>
 </svg>
