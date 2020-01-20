@@ -106,22 +106,23 @@ object App {
       if(!rdd.isEmpty()) {
         lastsOverallMeanTime = rdd.collect()(0)
         if(overallMeanTime > 0) {
-          val logMessage = "Tempo di risposta medio complessivo:\n" + overallMeanTime + "\nNome del componente piu' " +
-            "lento:\n" + componentName + "\nTempo di risposta del componente:\n" + componentResponseTime + "\nTempo " +
-            "medio complessivo degli ultimi batch:\n" + lastsOverallMeanTime
+          val logMessage = "===STATISTICHE REGISTRATE===\nTempo medio di risposta:\n" + overallMeanTime +
+            " ms\nNome del componente piu' lento:\n" + componentName + "\nTempo di risposta del componente:\n" +
+            componentResponseTime + " ms\nTempo medio di risposta degli ultimi " + windowSize + " batch:\n" +
+            lastsOverallMeanTime + " ms"
           Http(url).param("chat_id", chat).param("text", logMessage).asString
           if(overallMeanTime > 1.2 * lastsOverallMeanTime) {
-            // Send message to Telegram BOT
+            // Send alert to Telegram BOT
             val increment = (overallMeanTime.toFloat / lastsOverallMeanTime - 1) * 100
-            val alertMessage = "Registrato un incremento del tempo medio di risposta pari a " + increment + "%. " +
-              "Il componente che mediamente ha il maggior tempo di risposta e' " + componentName + ", con un " +
-              "tempo medio di " + componentResponseTime
+            val alertMessage = "Registrato un incremento del tempo medio di risposta pari al " + increment +
+              "%. Il componente che mediamente ha il maggior tempo di risposta e' il " + componentName +
+              ", con un tempo medio di " + componentResponseTime + " ms"
             Http(url).param("chat_id", chat).param("text", alertMessage).asString
           }
           else {
             val ratio = (overallMeanTime.toFloat / lastsOverallMeanTime - 1) * 100
-            val alertMessage = "Registrata una variazione del tempo medio di risposta pari a " + ratio + "%. " +
-              "Nessuna anomalia da segnalare"
+            val alertMessage = "Registrata una variazione del tempo medio di risposta pari a " + ratio +
+              "%. Nessuna anomalia da segnalare"
             Http(url).param("chat_id", chat).param("text", alertMessage).asString
           }
           overallMeanTime = 0
@@ -135,7 +136,8 @@ object App {
         }
       }
       else {
-        val logMessage = "Nessuna richiesta ricevuta negli ultimi " + windowSize + " batch"
+        val logMessage = "Nessuna richiesta ricevuta negli ultimi " + windowSize + " batch (" +
+          windowSize * batchSize + " secondi)"
         Http(url).param("chat_id", chat).param("text", logMessage).asString
       }
     }

@@ -9,7 +9,7 @@
     --conf spark.kubernetes.namespace=video-server \
     --conf spark.kubernetes.executor.request.cores=0.1 \
     --conf spark.kubernetes.authenticate.driver.serviceAccountName=deployer \
-    --conf spark.kubernetes.container.image=docker-registry.default.svc:5000/video-server/spark:1.0.1 \
+    --conf spark.kubernetes.container.image=docker-registry.default.svc:5000/video-server/spark:1.0.2 \
     --conf spark.kubernetes.driverEnv.KAFKA_ADDRESS=apache-kafka:9092 \
     --conf spark.kubernetes.driverEnv.KAFKA_GROUP_ID=spark-group \
     --conf spark.kubernetes.driverEnv.KAFKA_MAIN_TOPIC=logs \

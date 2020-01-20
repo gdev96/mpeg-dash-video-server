@@ -16,8 +16,8 @@ docker push docker-registry-default.master.particles.dieei.unict.it/video-server
 docker build -t docker-registry-default.master.particles.dieei.unict.it/video-server/spout:1.0.0 -f spout/Dockerfile.prod spout
 docker push docker-registry-default.master.particles.dieei.unict.it/video-server/spout:1.0.0
 
-docker build -t docker-registry-default.master.particles.dieei.unict.it/video-server/spark:1.0.1 -f spark/Dockerfile.prod spark
-docker push docker-registry-default.master.particles.dieei.unict.it/video-server/spark:1.0.1
+docker build -t docker-registry-default.master.particles.dieei.unict.it/video-server/spark:1.0.2 -f spark/Dockerfile.prod spark
+docker push docker-registry-default.master.particles.dieei.unict.it/video-server/spark:1.0.2
 
 docker build -t docker-registry-default.master.particles.dieei.unict.it/video-server/kafka-client:1.0.0 -f kafka_client/Dockerfile.prod kafka_client
 docker push docker-registry-default.master.particles.dieei.unict.it/video-server/kafka-client:1.0.0
