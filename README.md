@@ -14,7 +14,7 @@ Il progetto si sviluppa in due parti:
 
 ### Docker
 
-<img width="600" src="https://github.com/gdev96/video-server/blob/master/resources/docker.svg">
+<img width="600" src="resources/docker.svg">
 
 Il sistema e' composto da 5 componenti:
 - Un API Gateway, realizzato in NGINX, che riceve richieste dal client e le serve o reindirizza al Video Management Service;
@@ -36,7 +36,7 @@ Per l'ambiente di developement e' stato scelto di utilizzare degli appositi volu
 
 ### Kubernetes
 
-<img src="https://github.com/gdev96/video-server/blob/master/resources/kubernetes.svg">
+<img src="resources/kubernetes.svg">
 
 Viene effettuato il porting dell'applicazione su Kubernetes con conseguenti modifiche strutturali rispetto a quanto fatto in Docker. In particolare:
 - L'ingress diventa il nuovo API Gateway che inoltra le richieste su */vms* verso il Video Management Service, mentre tutte le altre richieste vengono reindirizzate su NGINX. Quest'ultimo ha il compito di rendergli disponibile lo storage;
@@ -48,7 +48,7 @@ Viene effettuato il porting dell'applicazione su Kubernetes con conseguenti modi
 
 ### OpenShift
 
-<img src="https://github.com/gdev96/video-server/blob/master/resources/openshift.svg">
+<img src="resources/openshift.svg">
 
 Anche il deployment su OpenShift del progetto Kubernetes prevede delle modifiche al sistema. In particolare:
 - L'ingress viene sostituito da un route affiancato da un deployment NGINX;
