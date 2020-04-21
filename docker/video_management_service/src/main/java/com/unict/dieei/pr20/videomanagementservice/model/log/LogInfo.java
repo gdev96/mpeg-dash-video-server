@@ -26,14 +26,14 @@ public class LogInfo {
     private Integer statusCode;
 
     @NotNull(message = "The X-REQUEST-ID parameter must not be blank!")
-    private Long requestId;
+    private String requestId;
 
     @NotNull(message = "The Component Name parameter must not be blank!")
     private String componentName;
 
     public LogInfo() {}
 
-    public LogInfo(String api, Integer inputPayloadSize, Integer outputPayloadSize, Long responseTime, Integer statusCode, Long requestId, String componentName) {
+    public LogInfo(String api, Integer inputPayloadSize, Integer outputPayloadSize, Long responseTime, Integer statusCode, String requestId, String componentName) {
         this.api = api;
         this.inputPayloadSize = inputPayloadSize;
         this.outputPayloadSize = outputPayloadSize;
@@ -91,11 +91,11 @@ public class LogInfo {
         this.statusCode = statusCode;
     }
 
-    public Long getRequestId() {
+    public String getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(Long requestId) {
+    public void setRequestId(String requestId) {
         this.requestId = requestId;
     }
 

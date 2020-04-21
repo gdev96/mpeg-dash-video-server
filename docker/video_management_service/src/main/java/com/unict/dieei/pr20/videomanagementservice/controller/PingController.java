@@ -21,7 +21,7 @@ public class PingController {
         ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(3000);
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-REQUEST-ID", requestId);
-        URI url = URI.create("http://video_processing_service_1:5000/ping");
+        URI url = URI.create("http://" + System.getenv("VIDEO_PROCESSING_ADDRESS") + "/ping");
         RequestEntity<String> request = new RequestEntity<>(headers, HttpMethod.GET, url);
         String responseBody;
         try {

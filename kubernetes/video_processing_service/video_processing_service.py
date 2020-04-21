@@ -3,10 +3,37 @@ from kafka import KafkaProducer
 import mysql.connector
 import os
 import subprocess
+from threading import Thread
 from time import time
 
 
-def write_logs(api, component_name, input_payload_size, output_payload_size, response_time, status_code, request_id):
+def encode_video(video_id, request_id):
+    # Timestamp start time
+    start_time = time()
+    
+    # Start encoding
+    cmd = "./encoder.sh " + video_id
+    return_code = subprocess.call(cmd, shell=True)
+
+    # Write response to Kafka
+    if return_code == 0:
+        response_message = "processed|" + str(video_id) + "|" + request_id
+        status_code = 200
+    else:
+        response_message = "processingFailed|" + str(video_id) + "|" + request_id
+        status_code = 500
+    response_message = response_message.encode("utf-8")
+    producer.send(os.environ["KAFKA_MAIN_TOPIC"], response_message)
+
+    # Timestamp finish time and evaluate response time
+    response_time = int(round((time() - start_time) * 1000))
+
+    # Write logs to database
+    api = "KAFKA"
+    component_name = os.environ["HOST_NAME"]
+    input_payload_size = len(message)
+    output_payload_size = len(response_message)
+
     # Connect to DB
     cnx = mysql.connector.connect(
         host=os.environ["DB_HOST"],
@@ -42,39 +69,15 @@ if __name__ == "__main__":
     print("Waiting for messages...")
 
     for message in consumer:
-        print("Received message: " + message.value.decode("utf-8"))
-
-        # Timestamp arrival time
-        arrival_time = time()
-
         message_received = message.value.decode("utf-8")
+        print("Received message: " + message_received)
+
         message_parts = message_received.split("|")
 
         if message_parts[0] == "process":
             video_id = message_parts[1]
             request_id = message_parts[2]
 
-            # Execute video encoding script
-            cmd = "./encoder.sh " + video_id
-            return_code = subprocess.call(cmd, shell=True)
-
-            # Write response to Kafka
-            if return_code == 0:
-                response_message = "processed|" + str(video_id) + "|" + str(request_id)
-                status_code = 200
-            else:
-                response_message = "processingFailed|" + str(video_id) + "|" + str(request_id)
-                status_code = 500
-            producer.send(os.environ["KAFKA_MAIN_TOPIC"], response_message.encode("utf-8"))
-
-            # Timestamp finish time and evaluate response time
-            response_time = int(round((time() - arrival_time) * 1000))
-
-            # Write logs to database
-            api = "KAFKA"
-            component_name = os.environ["HOST_NAME"]
-            input_payload_size = len(message)
-            output_payload_size = len(response_message.encode("utf-8"))
-
-            # Connect to DB and write logs
-            write_logs(api, component_name, input_payload_size, output_payload_size, response_time, status_code, request_id)
+            # Start thread to execute video encoding script
+            thread = Thread(target=encode_video, args=(video_id, request_id))
+            thread.start()

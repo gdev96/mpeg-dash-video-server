@@ -27,15 +27,9 @@ spec:
         ports:
           - containerPort: 80
         volumeMounts:
-          - mountPath: /webapp
-            name: code-volume
           - mountPath: /var/videofiles
             name: storage
       volumes:
-      - name: code-volume
-        hostPath:
-          path: /storage-management
-          type: Directory
       - name: storage
         hostPath:
           path: /storage-volume

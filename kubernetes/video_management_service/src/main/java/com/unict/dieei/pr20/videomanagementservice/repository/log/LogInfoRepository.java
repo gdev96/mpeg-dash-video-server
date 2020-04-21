@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface LogInfoRepository extends CrudRepository<LogInfo, Integer> {
-    Optional<LogInfo> findByRequestIdAndComponentName(Long requestId, String componentName);
+    Optional<LogInfo> findByRequestIdAndComponentName(String requestId, String componentName);
 }

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.unict.dieei.pr20.videomanagementservice.repository.log",
         entityManagerFactoryRef = "logEntityManagerFactory",
-        transactionManagerRef= "logTransactionManager"
+        transactionManagerRef = "logTransactionManager"
 )
 public class LogDataSourceConfig {
 

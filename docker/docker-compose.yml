@@ -5,7 +5,6 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./api_gateway/src:/webapp
       - storage:/var/videofiles
     links:
       - video_management_service
@@ -19,9 +18,12 @@ services:
       - log_db
     environment:
       HOST_NAME: video_management_service
+      VIDEO_PROCESSING_ADDRESS: video_processing_service_1:5000
+      APP_DB_HOST: app_db_1
       APP_DB_NAME: videoserver
       APP_DB_USER: videoserver_user
       APP_DB_PASSWORD: videoserverPR20!
+      LOG_DB_HOST: log_db_1
       LOG_DB_NAME: log
       LOG_DB_USER: log_user
       LOG_DB_PASSWORD: logPR20!
@@ -45,6 +47,7 @@ services:
       - log_db
     environment:
       HOST_NAME: video_processing_service
+      DB_HOST: log_db_1
       DB_NAME: log
       DB_USER: log_user
       DB_PASSWORD: logPR20!

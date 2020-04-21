@@ -55,8 +55,7 @@ public class LogFilter extends GenericFilterBean {
                 }
             }
             String api = requestWrapper.getMethod() + " " + requestUri;
-
-            long requestId = Long.parseLong(requestWrapper.getHeader("X-REQUEST-ID").replace(".", ""));
+            String requestId = requestWrapper.getHeader("X-REQUEST-ID");
             int inputPayloadSize = requestWrapper.getContentLength();
             if(inputPayloadSize == -1) {
                 inputPayloadSize = requestWrapper.getContentAsByteArray().length;

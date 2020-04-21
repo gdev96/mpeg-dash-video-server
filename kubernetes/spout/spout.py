@@ -27,7 +27,7 @@ def get_logs(event):
 
     global index
 
-    val = (index, )
+    val = (index,)
     my_cursor.execute(sql, val)
 
     logs = my_cursor.fetchall()
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     production_time = int(os.environ["PRODUCTION_TIME"])
     while True:
         event = Event()
-        thread = Thread(target=get_logs, args=(event, ))
+        thread = Thread(target=get_logs, args=(event,))
         thread.start()
         thread.join(production_time)
         event.set()

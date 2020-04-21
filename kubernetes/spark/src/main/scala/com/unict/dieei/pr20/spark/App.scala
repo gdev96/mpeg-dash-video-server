@@ -51,7 +51,7 @@ object App {
       // Get response times from requests
       .map(log => {
         val fields = log.split("\\|")
-        val requestId = fields(5).toLong
+        val requestId = fields(5)
         val responseTime = fields(6).toLong
         (requestId, responseTime)
       })

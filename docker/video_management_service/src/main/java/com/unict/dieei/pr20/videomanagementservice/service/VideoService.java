@@ -69,15 +69,11 @@ public class VideoService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("X-REQUEST-ID", requestId);
         String body = "{\"videoId\":" + id + "}";
-        URI url = URI.create("http://video_processing_service_1:5000/videos/process");
+        URI url = URI.create("http://" + System.getenv("VIDEO_PROCESSING_ADDRESS") + "/videos/process");
         RequestEntity<String> request = new RequestEntity<>(body, headers, HttpMethod.POST, url);
 
-        // Send request and get response
-        ResponseEntity<String> response = restTemplate.exchange(request, String.class);
-
-        if(response.getStatusCode() != HttpStatus.CREATED) {
-            throw new RestException(response.getBody(), response.getStatusCode());
-        }
+        // Send request to video_processing_service
+        restTemplate.exchange(request, String.class);
 
         video.setState("Uploaded");
 

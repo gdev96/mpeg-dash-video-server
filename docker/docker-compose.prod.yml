@@ -1,7 +1,7 @@
 version: '3'
 services:
   api_gateway:
-    image: gdev96/api-gateway:1.0.1
+    image: gdev96/api-gateway:1.0.2
     ports:
       - "8080:80"
     volumes:
@@ -9,7 +9,7 @@ services:
     links:
       - video_management_service
   video_management_service:
-    image: gdev96/video-management-service:1.1.1
+    image: gdev96/video-management-service:1.1.2
     volumes:
       - storage:/var/video
     links:
@@ -18,9 +18,12 @@ services:
       - log_db
     environment:
       HOST_NAME: video_management_service
+      VIDEO_PROCESSING_ADDRESS: video_processing_service_1:5000
+      APP_DB_HOST: app_db_1
       APP_DB_NAME: videoserver
       APP_DB_USER: videoserver_user
       APP_DB_PASSWORD: videoserverPR20!
+      LOG_DB_HOST: log_db_1
       LOG_DB_NAME: log
       LOG_DB_USER: log_user
       LOG_DB_PASSWORD: logPR20!
@@ -35,7 +38,7 @@ services:
     volumes:
       - app-db-data:/var/lib/mysql:rw
   video_processing_service:
-    image: gdev96/video-processing-service:1.1.1
+    image: gdev96/video-processing-service:1.1.2
     volumes:
       - storage:/var/video
       - storage:/var/videofiles
@@ -43,6 +46,7 @@ services:
       - log_db
     environment:
       HOST_NAME: video_processing_service
+      DB_HOST: log_db_1
       DB_NAME: log
       DB_USER: log_user
       DB_PASSWORD: logPR20!

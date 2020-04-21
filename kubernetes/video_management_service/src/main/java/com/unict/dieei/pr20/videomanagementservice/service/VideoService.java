@@ -1,23 +1,21 @@
 package com.unict.dieei.pr20.videomanagementservice.service;
 
+import com.unict.dieei.pr20.videomanagementservice.exception.RestException;
 import com.unict.dieei.pr20.videomanagementservice.model.videoserver.User;
 import com.unict.dieei.pr20.videomanagementservice.model.videoserver.Video;
-import com.unict.dieei.pr20.videomanagementservice.exception.RestException;
 import com.unict.dieei.pr20.videomanagementservice.repository.videoserver.UserRepository;
 import com.unict.dieei.pr20.videomanagementservice.repository.videoserver.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,7 +35,7 @@ public class VideoService {
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value(value="${KAFKA_MAIN_TOPIC}")
+    @Value(value = "${KAFKA_MAIN_TOPIC}")
     private String mainTopic;
 
     public Video addVideo(Authentication auth, Video video) {
@@ -48,7 +46,7 @@ public class VideoService {
         return videoRepository.save(video);
     }
 
-    public Video uploadVideo(Authentication auth, Integer id, Long requestId, MultipartFile file) {
+    public Video uploadVideo(Authentication auth, Integer id, String requestId, MultipartFile file) {
         Optional<User> optionalUser = userRepository.findByEmail(auth.getName());
         User user = optionalUser.get();
         Optional<Video> optionalVideo = videoRepository.findById(id);

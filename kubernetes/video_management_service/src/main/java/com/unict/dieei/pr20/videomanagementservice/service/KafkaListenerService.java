@@ -23,7 +23,7 @@ public class KafkaListenerService {
     @Autowired
     LogInfoRepository logInfoRepository;
 
-    @KafkaListener(topics="${KAFKA_MAIN_TOPIC}")
+    @KafkaListener(topics = "${KAFKA_MAIN_TOPIC}")
     public void listen(String message) {
         System.out.println("Received message: " + message);
 
@@ -34,7 +34,7 @@ public class KafkaListenerService {
 
         String status = messageParts[0];
         Integer videoId = Integer.parseInt(messageParts[1]);
-        Long requestId = Long.parseLong(messageParts[2]);
+        String requestId = messageParts[2];
 
         int statusCode;
         if(status.equals("processed")) {

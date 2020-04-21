@@ -28,13 +28,10 @@ def upload_video():
     # Execute video encoding script
     video_id = request.json["videoId"]
     cmd = "./encoder.sh " + str(video_id)
-    return_code = subprocess.call(cmd, shell=True)
+    subprocess.Popen(cmd, shell=True)
 
     # Make response
-    if return_code == 0:
-        response = app.make_response(("", 201))  # Video encoded successfully
-    else:
-        response = app.make_response(("Error while encoding video", 500))
+    response = app.make_response(("", 200))
 
     return response
 
@@ -56,13 +53,13 @@ def after_request_callback(response):
     input_payload_size = request.content_length
     if input_payload_size is None:
         input_payload_size = 0
-    request_id = request.headers.get("X-REQUEST-ID").replace(".", "")
+    request_id = request.headers.get("X-REQUEST-ID")
     output_payload_size = response.content_length
     status_code = response.status_code
 
     # Connect to DB
     cnx = mysql.connector.connect(
-        host="log_db_1",
+        host=os.environ["DB_HOST"],
         user=os.environ["DB_USER"],
         password=os.environ["DB_PASSWORD"],
         database=os.environ["DB_NAME"]

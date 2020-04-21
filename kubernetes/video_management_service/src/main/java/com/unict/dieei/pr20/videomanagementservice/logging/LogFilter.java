@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
 
 @Component
 public class LogFilter extends GenericFilterBean {
@@ -57,15 +55,7 @@ public class LogFilter extends GenericFilterBean {
                 }
             }
             String api = requestWrapper.getMethod() + " " + requestUri;
-
-            ArrayList<String> requestIds = Collections.list(requestWrapper.getHeaders("X-REQUEST-ID"));
-            long requestId;
-            if(requestIds.size() > 1) { // 2 requestIds received (drop the first one added by Ingress)
-                requestId = Long.parseLong(requestIds.get(1).replace(".", ""));
-            }
-            else { // 1 requestId received
-                requestId = Long.parseLong(requestIds.get(0).replace(".", ""));
-            }
+            String requestId = requestWrapper.getHeader("X-REQUEST-ID");
             int inputPayloadSize = requestWrapper.getContentLength();
             if(inputPayloadSize == -1) {
                 inputPayloadSize = requestWrapper.getContentAsByteArray().length;

@@ -15,7 +15,7 @@ public class LogService {
     @Autowired
     LogInfoRepository logInfoRepository;
 
-    public void addLog(String api, int inputPayloadSize, int outputPayloadSize, long responseTime, int statusCode, long requestId) {
+    public void addLog(String api, int inputPayloadSize, int outputPayloadSize, long responseTime, int statusCode, String requestId) {
         String componentName = System.getenv("HOST_NAME");
         Optional<LogInfo> optionalLog = logInfoRepository.findByRequestIdAndComponentName(requestId, componentName);
         LogInfo logInfo;

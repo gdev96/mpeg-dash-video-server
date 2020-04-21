@@ -33,7 +33,6 @@ echo "Mounting directories..."
 
 if ! pgrep -x 'minikube' > /dev/null
 then
-  minikube mount ../../storage_management_service:/storage-management > /dev/null &
   minikube mount ../../video_processing_service:/video-processing > /dev/null &
   minikube mount ../../spout:/spout > /dev/null &
 
