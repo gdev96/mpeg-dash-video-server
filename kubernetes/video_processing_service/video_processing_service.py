@@ -7,7 +7,7 @@ from threading import Thread
 from time import time
 
 
-def encode_video(video_id, request_id):
+def encode_video(video_id, request_id, message_length):
     # Timestamp start time
     start_time = time()
     
@@ -31,7 +31,7 @@ def encode_video(video_id, request_id):
     # Write logs to database
     api = "KAFKA"
     component_name = os.environ["HOST_NAME"]
-    input_payload_size = len(message)
+    input_payload_size = message_length
     output_payload_size = len(response_message)
 
     # Connect to DB
@@ -79,5 +79,5 @@ if __name__ == "__main__":
             request_id = message_parts[2]
 
             # Start thread to execute video encoding script
-            thread = Thread(target=encode_video, args=(video_id, request_id))
+            thread = Thread(target=encode_video, args=(video_id, request_id, len(message)))
             thread.start()
