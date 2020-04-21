@@ -17,10 +17,10 @@ def encode_video(video_id, request_id, message_length):
 
     # Write response to Kafka
     if return_code == 0:
-        response_message = "processed|" + str(video_id) + "|" + request_id
+        response_message = "processed|" + video_id + "|" + request_id
         status_code = 200
     else:
-        response_message = "processingFailed|" + str(video_id) + "|" + request_id
+        response_message = "processingFailed|" + video_id + "|" + request_id
         status_code = 500
     response_message = response_message.encode("utf-8")
     producer.send(os.environ["KAFKA_MAIN_TOPIC"], response_message)
